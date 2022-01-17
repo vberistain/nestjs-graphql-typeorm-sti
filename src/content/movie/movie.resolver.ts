@@ -9,9 +9,7 @@ export class MovieResolver {
 
     @Mutation(() => Movie)
     async createMovie(@Args('createMovieInput') createMovieInput: CreateMovieInput) {
-        const res = await this.movieService.create(createMovieInput);
-        console.log(res);
-        return res;
+        return await this.movieService.create(createMovieInput);
     }
 
     @Query(() => [Movie], { name: 'movies' })

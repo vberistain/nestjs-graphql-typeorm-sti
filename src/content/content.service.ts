@@ -1,20 +1,15 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/mysql';
 import { Injectable } from '@nestjs/common';
-import { CreateContentInput } from './dto/create-content.input';
 import { UpdateContentInput } from './dto/update-content.input';
 import { Content } from './content.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ContentService {
     constructor(
         @InjectRepository(Content)
-        private readonly contentRepository: EntityRepository<Content>
+        private readonly contentRepository: Repository<Content>
     ) {}
-    async create(createContentInput: CreateContentInput) {
-        const res = await this.contentRepository.create(createContentInput);
-        return res;
-    }
 
     findAll() {
         return this.contentRepository.find({});
@@ -25,10 +20,10 @@ export class ContentService {
     }
 
     update(id: number, updateContentInput: UpdateContentInput) {
-        return this.contentRepository.nativeUpdate(id, updateContentInput);
+        return this.contentRepository.update(id, updateContentInput);
     }
 
     remove(id: number) {
-        return this.contentRepository.nativeDelete(id);
+        return this.contentRepository.delete(id);
     }
 }

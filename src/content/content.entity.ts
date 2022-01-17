@@ -1,34 +1,33 @@
-import { Entity, Enum, Property } from '@mikro-orm/core';
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
-
-@ObjectType()
-@InputType({ isAbstract: true })
-@Entity({
-    discriminatorColumn: 'type'
-})
-export class Content {
-    @Field(() => Int)
-    @Property({ primary: true })
-    id!: number;
-
-    @Field({ description: 'Content title' })
-    @Property()
-    title: string;
-
-    @Field({ description: 'Content description' })
-    @Property({ nullable: true })
-    description?: string;
-
-    @Field(() => ContentType, { description: 'Content type', nullable: true })
-    @Enum()
-    type!: ContentType;
-}
+import { Column, Entity, PrimaryColumn, TableInheritance } from 'typeorm';
 
 export enum ContentType {
     movie = 'movie',
     playlist = 'playlist',
     bundle = 'bundle',
     livestream = 'livestream'
+}
+
+@ObjectType()
+@InputType({ isAbstract: true })
+@Entity()
+@TableInheritance({ column: { type: 'varchar', name: 'ctype', select: false } })
+export abstract class Content {
+    @Field(() => Int)
+    @PrimaryColumn()
+    id!: number;
+
+    @Field({ description: 'Content title' })
+    @Column()
+    title: string;
+
+    @Field({ description: 'Content description' })
+    @Column({ nullable: true })
+    description?: string;
+
+    @Field(() => ContentType, { description: 'Content type' })
+    @Column({ type: 'enum', enum: ContentType })
+    type: ContentType;
 }
 
 registerEnumType(ContentType, {
