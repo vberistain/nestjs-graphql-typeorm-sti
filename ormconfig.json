@@ -5,8 +5,15 @@
     "password": "root",
     "port": 3306,
     "database": "ticket-app",
-    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "entities": [
+        "dist/**/*.entity{.ts,.js}"
+    ],
     "synchronize": true,
-    "migrations": ["dist/migrations/*.js"],
-    "cli": { "migrationsDir": "./migrations" }
+    "logging": false,
+    "migrations": [
+        "dist/migrations/*.js"
+    ],
+    "cli": {
+        "migrationsDir": "./migrations"
+    }
 }

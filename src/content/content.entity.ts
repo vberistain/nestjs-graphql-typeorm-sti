@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryColumn, TableInheritance } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn, TableInheritance } from 'typeorm';
 
 export enum ContentType {
     movie = 'movie',
@@ -8,11 +8,11 @@ export enum ContentType {
     livestream = 'livestream'
 }
 
-@ObjectType()
 @InputType({ isAbstract: true })
+@ObjectType({ isAbstract: true })
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'ctype', select: false } })
-export abstract class Content {
+@TableInheritance({ column: { type: 'varchar', name: 'type', select: true, enum: ContentType } })
+export abstract class Content extends BaseEntity {
     @Field(() => Int)
     @PrimaryColumn()
     id!: number;

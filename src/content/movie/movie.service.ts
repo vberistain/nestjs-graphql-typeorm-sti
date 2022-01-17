@@ -1,19 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ContentType } from '../content.entity';
 import { UpdateContentInput } from '../dto/update-content.input';
 import { CreateMovieInput } from './dto/create-movie.input';
 import { Movie } from './movie.entity';
 
 @Injectable()
 export class MovieService {
-    constructor(
-        @InjectRepository(Movie)
-        private readonly movieRepository: Repository<Movie>
-    ) {}
+    @InjectRepository(Movie)
+    private readonly movieRepository: Repository<Movie>
     async create(createMovieInput: CreateMovieInput) {
-        const res = await this.movieRepository.save(createMovieInput);
-        return res;
+        return await this.movieRepository.save({ ...createMovieInput, type: ContentType.movie });
     }
 
     findAll() {

@@ -1,5 +1,5 @@
-import { InputType } from '@nestjs/graphql';
+import { InputType, OmitType } from '@nestjs/graphql';
 import { Movie } from '../movie.entity';
 
 @InputType()
-export class CreateMovieInput extends Movie {}
+export class CreateMovieInput extends OmitType(Movie, ["type"]) { }
