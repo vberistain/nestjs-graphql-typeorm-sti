@@ -3,6 +3,7 @@ import { License } from './license.entity';
 
 const licenseFixture: License = {
     id: 1,
+    userId: 12,
     expireDate: new Date(21, 3, 3),
     startDate: new Date(21, 3, 2),
     content: {

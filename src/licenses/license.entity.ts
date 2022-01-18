@@ -10,6 +10,10 @@ export class License {
     @PrimaryColumn()
     id: number;
 
+    @Field(() => Int)
+    @PrimaryColumn()
+    userId: number;
+
     @Field(() => Date, { nullable: true })
     @Column({ nullable: true })
     expireDate?: Date;
