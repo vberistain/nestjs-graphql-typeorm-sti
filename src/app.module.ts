@@ -7,21 +7,22 @@ import { Movie } from './content/movies/movie.entity';
 import { MoviesModule } from './content/movies/movies.module';
 import { Playlist } from './content/playlists/playlist.entity';
 import { PlaylistsModule } from './content/playlists/playlists.module';
+import { License } from './licenses/license.entity';
 import { LicensesModule } from './licenses/licenses.module';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
-            entities: [Content, Playlist, Movie]
+            entities: [Content, Playlist, Movie, License]
         }),
         GraphQLModule.forRoot({
-            include: [PlaylistsModule, MoviesModule],
+            include: [PlaylistsModule, MoviesModule, LicensesModule],
             autoSchemaFile: true
         }),
         ContentsModule,
         PlaylistsModule,
         MoviesModule,
-        LicensesModule,
+        LicensesModule
     ]
 })
-export class AppModule { }
+export class AppModule {}

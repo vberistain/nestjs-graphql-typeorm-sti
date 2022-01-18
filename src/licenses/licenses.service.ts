@@ -1,26 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateLicenseInput } from './dto/create-license.input';
-import { UpdateLicenseInput } from './dto/update-license.input';
+import { License } from './license.entity';
 
 @Injectable()
 export class LicensesService {
-  create(createLicenseInput: CreateLicenseInput) {
-    return 'This action adds a new license';
-  }
+    @InjectRepository(License)
+    private readonly licenseRepository: Repository<License>;
 
-  findAll() {
-    return `This action returns all licenses`;
-  }
+    create(createLicenseInput: CreateLicenseInput) {
+        return this.licenseRepository.save(createLicenseInput);
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} license`;
-  }
+    findAll() {
+        return this.licenseRepository.find();
+    }
 
-  update(id: number, updateLicenseInput: UpdateLicenseInput) {
-    return `This action updates a #${id} license`;
-  }
+    findOne(id: number) {
+        return this.licenseRepository.findOne(id);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} license`;
-  }
+    remove(id: number) {
+        return this.licenseRepository.delete(id);
+    }
 }

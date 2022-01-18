@@ -16,6 +16,7 @@ describe('MoviesService', () => {
         findOne: jest.fn(async () => movieFixture),
         delete: jest.fn(async () => ({ raw: {} }))
     };
+
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [

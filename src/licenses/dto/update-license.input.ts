@@ -1,8 +1,8 @@
-import { CreateLicenseInput } from './create-license.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Int, Field, OmitType } from '@nestjs/graphql';
+import { License } from '../license.entity';
 
 @InputType()
-export class UpdateLicenseInput extends PartialType(CreateLicenseInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateLicenseInput extends OmitType(License, ['content', 'id']) {
+    @Field(() => Int)
+    contentId: number;
 }

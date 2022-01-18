@@ -1,7 +1,8 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, OmitType } from '@nestjs/graphql';
+import { License } from '../license.entity';
 
 @InputType()
-export class CreateLicenseInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+export class CreateLicenseInput extends OmitType(License, ['content']) {
+    @Field(() => Int)
+    contentId: number;
 }
