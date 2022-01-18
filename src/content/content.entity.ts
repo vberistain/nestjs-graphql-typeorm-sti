@@ -11,7 +11,7 @@ export enum ContentType {
 @ObjectType({ isAbstract: true })
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type', select: true, enum: ContentType } })
-export abstract class Content extends BaseEntity {
+export abstract class Content {
     @Field(() => Int)
     @PrimaryColumn()
     id!: number;

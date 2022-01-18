@@ -3,7 +3,7 @@ import { ChildEntity, Column } from 'typeorm';
 import { Content, ContentType } from '../content.entity';
 
 @InputType({ isAbstract: true })
-@ObjectType("Movie")
+@ObjectType("Movie", { isAbstract: true })
 @ChildEntity({ type: ContentType.movie })
 export class Movie extends Content {
     @Field(() => Int)
