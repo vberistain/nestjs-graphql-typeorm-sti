@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
-import { BaseEntity, Column, Entity, PrimaryColumn, TableInheritance } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToMany, ManyToOne, PrimaryColumn, TableInheritance } from 'typeorm';
 
 export enum ContentType {
     movie = 'movie',
@@ -8,7 +8,6 @@ export enum ContentType {
     livestream = 'livestream'
 }
 
-@InputType({ isAbstract: true })
 @ObjectType({ isAbstract: true })
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type', select: true, enum: ContentType } })

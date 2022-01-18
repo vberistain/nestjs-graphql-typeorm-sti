@@ -6,7 +6,7 @@
     "port": 3306,
     "database": "ticket-app",
     "entities": [
-        "dist/**/*.entity{.ts,.js}"
+        "dist/**/*.entity.js"
     ],
     "synchronize": true,
     "logging": false,

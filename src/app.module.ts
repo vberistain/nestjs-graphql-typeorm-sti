@@ -2,25 +2,26 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Content } from './content/content.entity';
-import { ContentModule } from './content/content.module';
-import { Livestream } from './content/livestream/livestream.entity';
-import { LivestreamModule } from './content/livestream/livestream.module';
-import { Movie } from './content/movie/movie.entity';
-import { MovieModule } from './content/movie/movie.module';
-import { Playlist } from './content/playlist/playlist.entity';
-import { PlaylistModule } from './content/playlist/playlist.module';
-// import { Content } from './content/entities/content.entity';
+import { ContentsModule } from './content/contents.module';
+import { Movie } from './content/movies/movie.entity';
+import { MoviesModule } from './content/movies/movies.module';
+import { Playlist } from './content/playlists/playlist.entity';
+import { PlaylistsModule } from './content/playlists/playlists.module';
+import { LicensesModule } from './licenses/licenses.module';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot({
-            entities: [Content, Playlist, Movie, Livestream]
+            entities: [Content, Playlist, Movie]
         }),
         GraphQLModule.forRoot({
-            include: [ContentModule, PlaylistModule, MovieModule, LivestreamModule],
+            include: [PlaylistsModule, MoviesModule],
             autoSchemaFile: true
         }),
-        ContentModule
+        ContentsModule,
+        PlaylistsModule,
+        MoviesModule,
+        LicensesModule,
     ]
 })
 export class AppModule { }
