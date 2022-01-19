@@ -12,7 +12,7 @@ export class MoviesService {
     private readonly moviesRepository: Repository<Movie>;
 
     create(createMovieInput: CreateMovieInput) {
-        return this.moviesRepository.save({ ...createMovieInput, type: ContentType.movie });
+        return this.moviesRepository.save(createMovieInput);
     }
 
     findAll() {

@@ -1,4 +1,4 @@
-import { UpdatePlaybackInput } from './update-playback.input';
+import { UpdatePlaybackInput } from '../dto/update-playback.input';
 
 const updatePlaybackFixture: UpdatePlaybackInput = {
     id: 1,

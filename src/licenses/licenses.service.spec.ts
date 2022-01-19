@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { repositoryMockFactory, serviceMockFactory } from '../../test/utils';
+import { repositoryMockFactory } from '../../test/utils';
 import createLicenseInputFixture from './fixtures/create-license.fixture';
 import licenseFixture from './fixtures/license.fixture';
+import updateLicenseInputFixture from './fixtures/update-license.fixture';
 import { License } from './license.entity';
 import { LicensesResolver } from './licenses.resolver';
 import { LicensesService } from './licenses.service';
@@ -56,6 +57,13 @@ describe('LicensesService', () => {
         it('should call repository.delete with the right parameters', async () => {
             await service.remove(1);
             expect(repository.delete).toHaveBeenCalledWith(1);
+        });
+    });
+
+    describe('update', () => {
+        it('should call repository.update with the right parameters', async () => {
+            await service.update(1, updateLicenseInputFixture);
+            expect(repository.update).toHaveBeenCalledWith(1, updateLicenseInputFixture);
         });
     });
 });

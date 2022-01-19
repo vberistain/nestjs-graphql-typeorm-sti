@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreatePlaybackInput } from './dto/create-playback.input';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
+import { Playback } from './playback.entity';
 
 @Injectable()
 export class PlaybacksService {
-  create(createPlaybackInput: CreatePlaybackInput) {
-    return 'This action adds a new playback';
-  }
+    @InjectRepository(Playback)
+    private readonly playbacksRepository: Repository<Playback>;
 
-  findAll() {
-    return `This action returns all playbacks`;
-  }
+    create(createPlaybackInput: CreatePlaybackInput) {
+        return this.playbacksRepository.save(createPlaybackInput);
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} playback`;
-  }
+    findAll() {
+        return this.playbacksRepository.find();
+    }
 
-  update(id: number, updatePlaybackInput: UpdatePlaybackInput) {
-    return `This action updates a #${id} playback`;
-  }
+    findOne(id: number) {
+        return this.playbacksRepository.findOne(id);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} playback`;
-  }
+    update(id: number, updatePlaybackInput: UpdatePlaybackInput) {
+        return this.playbacksRepository.update(id, updatePlaybackInput);
+    }
+
+    remove(id: number) {
+        return this.playbacksRepository.delete(id);
+    }
 }

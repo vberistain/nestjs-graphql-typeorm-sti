@@ -15,12 +15,12 @@ export class LicensesResolver {
         return this.licensesService.create(createLicenseInput);
     }
 
-    @Query(() => [License], { name: 'licenses' })
+    @Query(() => [License])
     findLicenses() {
         return this.licensesService.findAll();
     }
 
-    @Query(() => License, { name: 'license' })
+    @Query(() => License)
     findLicense(@Args('id', { type: () => Int }) id: number) {
         return this.licensesService.findOne(id);
     }

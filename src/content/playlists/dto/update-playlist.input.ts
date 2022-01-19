@@ -1,8 +1,8 @@
-import { Field, InputType, Int, OmitType, PartialType } from '@nestjs/graphql';
-import { CreateLicenseInput } from '../../../licenses/dto/create-license.input';
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import { CreatePlaylistInput } from './create-playlist.input';
 
 @InputType()
-export class UpdatePlaylistInput extends PartialType(CreateLicenseInput) {
+export class UpdatePlaylistInput extends PartialType(CreatePlaylistInput) {
     @Field(() => Int)
     id: number;
 }
