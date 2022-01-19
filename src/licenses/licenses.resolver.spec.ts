@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../test/utils';
 import { UpdateLicenseInput } from './dto/update-license.input';
-import licenseFixture from './license.fixture';
+import licenseFixture from './fixtures/license.fixture';
 import { LicensesResolver } from './licenses.resolver';
 import { LicensesService } from './licenses.service';
 

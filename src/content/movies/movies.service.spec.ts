@@ -1,22 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { repositoryMockFactory } from '../../../test/utils';
-import createMovieInputFixture from './dto/create-movie.fixture';
+import createMovieInputFixture from './fixtures/create-movie.fixture';
+import updateMovieInputFixture from './fixtures/update-movie.fixture';
 import { Movie } from './movie.entity';
-import movieFixture from './movie.fixture';
+import movieFixture from './fixtures/movie.fixture';
 import { MoviesService } from './movies.service';
 
 describe('MoviesService', () => {
     let service: MoviesService;
     let repository: Repository<Movie>;
-
-    const mockRepo: Partial<Repository<Movie>> = {
-        find: jest.fn(async () => [movieFixture]),
-        save: jest.fn(async (movieFixture: any) => movieFixture),
-        findOne: jest.fn(async () => movieFixture),
-        delete: jest.fn(async () => ({ raw: {} }))
-    };
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -53,6 +47,14 @@ describe('MoviesService', () => {
         it('should call repository.findOne with the right parameters and return the result', async () => {
             const res = await service.findOne(1);
             expect(repository.findOne).toHaveBeenCalledWith(1);
+            expect(res).toEqual(movieFixture);
+        });
+    });
+
+    describe('update', () => {
+        it('should call repository.update with the right parameters and return the result', async () => {
+            const res = await service.update(1, updateMovieInputFixture);
+            expect(repository.update).toHaveBeenCalledWith(1, updateMovieInputFixture);
             expect(res).toEqual(movieFixture);
         });
     });

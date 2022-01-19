@@ -1,4 +1,4 @@
-import { CreatePlaybackInput } from './create-playback.input';
+import { CreatePlaybackInput } from '../dto/create-playback.input';
 
 const createPlaybackFixture: CreatePlaybackInput = {
     id: 1,

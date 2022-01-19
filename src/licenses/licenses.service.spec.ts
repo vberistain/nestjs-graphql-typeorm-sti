@@ -1,22 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import createLicenseInputFixture from './dto/create-license.fixture';
+import { repositoryMockFactory, serviceMockFactory } from '../../test/utils';
+import createLicenseInputFixture from './fixtures/create-license.fixture';
+import licenseFixture from './fixtures/license.fixture';
 import { License } from './license.entity';
-import licenseFixture from './license.fixture';
 import { LicensesResolver } from './licenses.resolver';
 import { LicensesService } from './licenses.service';
 
 describe('LicensesService', () => {
     let service: LicensesService;
     let repository: Repository<License>;
-
-    const mockRepo: Partial<Repository<License>> = {
-        find: jest.fn(async () => [licenseFixture]),
-        save: jest.fn(async (licenseFixture: any) => licenseFixture),
-        findOne: jest.fn(async () => licenseFixture),
-        delete: jest.fn(async () => ({ raw: {} }))
-    };
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -25,7 +19,7 @@ describe('LicensesService', () => {
                 LicensesService,
                 {
                     provide: getRepositoryToken(License),
-                    useValue: mockRepo
+                    useFactory: repositoryMockFactory(licenseFixture)
                 }
             ]
         }).compile();

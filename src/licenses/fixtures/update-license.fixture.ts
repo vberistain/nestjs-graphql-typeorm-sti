@@ -1,4 +1,4 @@
-import { UpdateLicenseInput } from './update-license.input';
+import { UpdateLicenseInput } from '../dto/update-license.input';
 
 const updateLicenseInputFixture: UpdateLicenseInput = {
     id: 1,

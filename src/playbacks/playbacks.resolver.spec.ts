@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../test/utils';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
-import playbackFixture from './playback.fixture';
+import playbackFixture from './fixtures/playback.fixture';
 import { PlaybacksResolver } from './playbacks.resolver';
 import { PlaybacksService } from './playbacks.service';
 

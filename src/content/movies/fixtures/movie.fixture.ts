@@ -1,7 +1,7 @@
 import { ContentType } from '../../content.entity';
-import { CreateMovieInput } from './create-movie.input';
+import { Movie } from '../movie.entity';
 
-const createMovieInputFixture: CreateMovieInput = {
+const movieFixture: Movie = {
     duration: 123,
     id: 1,
     title: 'Title',
@@ -9,4 +9,4 @@ const createMovieInputFixture: CreateMovieInput = {
     type: ContentType.movie
 };
 
-export default createMovieInputFixture;
+export default movieFixture;

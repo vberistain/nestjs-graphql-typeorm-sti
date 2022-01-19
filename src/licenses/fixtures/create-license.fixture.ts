@@ -1,4 +1,4 @@
-import { CreateLicenseInput } from './create-license.input';
+import { CreateLicenseInput } from '../dto/create-license.input';
 
 const createLicenseInputFixture: CreateLicenseInput = {
     id: 1,

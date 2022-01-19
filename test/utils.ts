@@ -7,6 +7,7 @@ export type MockType<T> = {
 export function repositoryMockFactory(fixture): () => MockType<Partial<Repository<any>>> {
     return jest.fn(() => ({
         findOne: jest.fn(async (id: any) => fixture),
+        update: jest.fn(async (id: any, fixture: any) => fixture),
         find: jest.fn(async () => [fixture]),
         save: jest.fn(async (entity: any) => entity),
         delete: jest.fn(async (id: any) => ({ raw: {} }))

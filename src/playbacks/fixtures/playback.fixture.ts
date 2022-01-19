@@ -1,5 +1,5 @@
-import { ContentType } from '../content/content.entity';
-import { Playback } from './playback.entity';
+import { ContentType } from '../../content/content.entity';
+import { Playback } from '../playback.entity';
 
 const playbackFixture: Playback = {
     id: 1,

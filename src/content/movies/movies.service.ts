@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ContentType } from '../content.entity';
 import { CreateMovieInput } from './dto/create-movie.input';
+import { UpdateMovieInput } from './dto/update-movie.input';
 import { Movie } from './movie.entity';
 
 @Injectable()
@@ -10,8 +11,8 @@ export class MoviesService {
     @InjectRepository(Movie)
     private readonly moviesRepository: Repository<Movie>;
 
-    async create(createMovieInput: CreateMovieInput) {
-        return await this.moviesRepository.save({ ...createMovieInput, type: ContentType.movie });
+    create(createMovieInput: CreateMovieInput) {
+        return this.moviesRepository.save({ ...createMovieInput, type: ContentType.movie });
     }
 
     findAll() {
@@ -22,9 +23,9 @@ export class MoviesService {
         return this.moviesRepository.findOne(id);
     }
 
-    // update(id: number, updateContentInput: UpdateContentInput) {
-    //     return this.movieRepository.update(id, updateContentInput);
-    // }
+    update(id: number, updateMovieInput: UpdateMovieInput) {
+        return this.moviesRepository.update(id, updateMovieInput);
+    }
 
     remove(id: number) {
         return this.moviesRepository.delete(id);
