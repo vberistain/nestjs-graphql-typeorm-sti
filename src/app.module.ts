@@ -9,6 +9,7 @@ import { Playlist } from './content/playlists/playlist.entity';
 import { PlaylistsModule } from './content/playlists/playlists.module';
 import { License } from './licenses/license.entity';
 import { LicensesModule } from './licenses/licenses.module';
+import { PlaybacksModule } from './playbacks/playbacks.module';
 
 @Module({
     imports: [
@@ -16,13 +17,14 @@ import { LicensesModule } from './licenses/licenses.module';
             entities: [Content, Playlist, Movie, License]
         }),
         GraphQLModule.forRoot({
-            include: [PlaylistsModule, MoviesModule, LicensesModule],
+            include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule],
             autoSchemaFile: true
         }),
         ContentsModule,
         PlaylistsModule,
         MoviesModule,
-        LicensesModule
+        LicensesModule,
+        PlaybacksModule
     ]
 })
 export class AppModule {}

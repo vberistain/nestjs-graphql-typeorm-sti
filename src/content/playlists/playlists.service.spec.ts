@@ -9,14 +9,17 @@ describe('PlaylistService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [PlaylistsService, {
-                provide: getRepositoryToken(Playlist),
-                useValue: {}
-            }, {
-                provide: getRepositoryToken(Content),
-                useValue: {}
-            }],
-
+            providers: [
+                PlaylistsService,
+                {
+                    provide: getRepositoryToken(Playlist),
+                    useValue: {}
+                },
+                {
+                    provide: getRepositoryToken(Content),
+                    useValue: {}
+                }
+            ]
         }).compile();
 
         service = module.get<PlaylistsService>(PlaylistsService);

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { repositoryMockFactory } from '../../../test/utils';
 import createMovieInputFixture from './dto/create-movie.fixture';
 import { Movie } from './movie.entity';
 import movieFixture from './movie.fixture';
@@ -23,7 +24,7 @@ describe('MoviesService', () => {
                 MoviesService,
                 {
                     provide: getRepositoryToken(Movie),
-                    useValue: mockRepo
+                    useFactory: repositoryMockFactory(movieFixture)
                 }
             ]
         }).compile();

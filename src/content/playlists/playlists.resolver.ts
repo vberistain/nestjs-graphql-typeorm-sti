@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CreatePlaylistInput } from './dto/create-playlist.input';
 import { Playlist } from './playlist.entity';
@@ -5,7 +6,8 @@ import { PlaylistsService } from './playlists.service';
 
 @Resolver(() => Playlist)
 export class PlaylistsResolver {
-    constructor(private readonly playlistsService: PlaylistsService) { }
+    @Inject()
+    private readonly playlistsService: PlaylistsService;
 
     @Mutation(() => Playlist)
     async createPlaylist(@Args('createPlaylistInput') createPlaylistInput: CreatePlaylistInput) {
@@ -38,7 +40,10 @@ export class PlaylistsResolver {
     }
 
     @Mutation(() => Playlist)
-    addContentToPlaylist(@Args('playlistId', { type: () => Int }) playlistId: number, @Args('contentId', { type: () => Int }) contentId: number) {
+    addContentToPlaylist(
+        @Args('playlistId', { type: () => Int }) playlistId: number,
+        @Args('contentId', { type: () => Int }) contentId: number
+    ) {
         return this.playlistsService.addContent(playlistId, contentId);
     }
 }

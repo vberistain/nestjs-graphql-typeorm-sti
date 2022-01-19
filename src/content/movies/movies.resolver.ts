@@ -1,3 +1,4 @@
+import { Inject } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CreateMovieInput } from './dto/create-movie.input';
 import { Movie } from './movie.entity';
@@ -5,7 +6,8 @@ import { MoviesService } from './movies.service';
 
 @Resolver(() => Movie)
 export class MoviesResolver {
-    constructor(private readonly moviesService: MoviesService) { }
+    @Inject()
+    private readonly moviesService: MoviesService;
 
     @Mutation(() => Movie)
     async createMovie(@Args('createMovieInput') createMovieInput: CreateMovieInput) {

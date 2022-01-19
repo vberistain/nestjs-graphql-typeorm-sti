@@ -2,10 +2,13 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { LicensesService } from './licenses.service';
 import { License } from './license.entity';
 import { CreateLicenseInput } from './dto/create-license.input';
+import { Inject } from '@nestjs/common';
+import { UpdateLicenseInput } from './dto/update-license.input';
 
 @Resolver(() => License)
 export class LicensesResolver {
-    constructor(private readonly licensesService: LicensesService) {}
+    @Inject()
+    private readonly licensesService: LicensesService;
 
     @Mutation(() => License)
     createLicense(@Args('createLicenseInput') createLicenseInput: CreateLicenseInput) {
@@ -13,19 +16,19 @@ export class LicensesResolver {
     }
 
     @Query(() => [License], { name: 'licenses' })
-    findAll() {
+    findLicenses() {
         return this.licensesService.findAll();
     }
 
     @Query(() => License, { name: 'license' })
-    findOne(@Args('id', { type: () => Int }) id: number) {
+    findLicense(@Args('id', { type: () => Int }) id: number) {
         return this.licensesService.findOne(id);
     }
 
-    // @Mutation(() => License)
-    // updateLicense(@Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput) {
-    //     return this.licensesService.update(updateLicenseInput.id, updateLicenseInput);
-    // }
+    @Mutation(() => License)
+    updateLicense(@Args('updateLicenseInput') updateLicenseInput: UpdateLicenseInput) {
+        return this.licensesService.update(updateLicenseInput.id, updateLicenseInput);
+    }
 
     @Mutation(() => License)
     removeLicense(@Args('id', { type: () => Int }) id: number) {

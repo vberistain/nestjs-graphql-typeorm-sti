@@ -2,7 +2,7 @@ import { ObjectType, Field, InputType, Int } from '@nestjs/graphql';
 import { Content } from '../content/content.entity';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
-@InputType({ isAbstract: true })
+@InputType('LicenseInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
 @Entity()
 export class License {

@@ -1,8 +1,8 @@
 import { InputType, OmitType } from '@nestjs/graphql';
 import { Content } from '../../content/content.entity';
-import { License } from '../license.entity';
+import { Playback } from '../playback.entity';
 
 @InputType()
-export class CreateLicenseInput extends OmitType(License, ['content']) {
+export class CreatePlaybackInput extends OmitType(Playback, ['content', 'createdAt', 'updatedAt']) {
     content: Pick<Content, 'id'>;
 }
