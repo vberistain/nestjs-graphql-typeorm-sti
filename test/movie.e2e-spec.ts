@@ -31,6 +31,57 @@ describe('MovieResolver (e2e)', () => {
 
     describe('createMovie', () => {
         it('should create a new movie in the database', async () => {
+            await movieRepository.save({
+                id: 1,
+                title: 'Interstellar',
+                description: 'Interestellar description',
+                duration: 223,
+                type: ContentType.movie
+            });
+            const mutation = gql`
+                mutation {
+                    createMovie(
+                        createMovieInput: {
+                            id: 1
+                            title: "Interstellar 2"
+                            description: "Interestellar description"
+                            duration: 223
+                            type: movie
+                        }
+                    ) {
+                        id
+                        title
+                        description
+                        duration
+                        type
+                    }
+                }
+            `;
+
+            const res = await request(app.getHttpServer())
+                .post('/graphql')
+                .send({
+                    query: print(mutation)
+                });
+            expect(res.body.data.createMovie).toEqual({
+                id: 1,
+                duration: 223,
+                type: 'movie',
+                title: 'Interstellar 2',
+                description: 'Interestellar description'
+            });
+
+            const dbMovie = await movieRepository.findOne(1);
+            expect(dbMovie).toEqual({
+                id: 1,
+                duration: 223,
+                type: 'movie',
+                title: 'Interstellar 2',
+                description: 'Interestellar description'
+            });
+        });
+
+        it('should update a movie when already in the database', async () => {
             const mutation = gql`
                 mutation {
                     createMovie(
