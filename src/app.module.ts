@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import formatGraphQLError from './common/graphql-error-formater';
+import formatGraphQLError from './common/errors/graphql-error-formater';
 import { ContentsModule } from './content/contents.module';
 import { MoviesModule } from './content/movies/movies.module';
 import { PlaylistsModule } from './content/playlists/playlists.module';

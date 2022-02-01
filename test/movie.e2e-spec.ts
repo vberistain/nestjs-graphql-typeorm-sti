@@ -208,7 +208,7 @@ describe('MovieResolver (e2e)', () => {
                 expect.objectContaining({
                     message: 'Movie Not Found',
                     extensions: {
-                        code: 'NOT_FOUND'
+                        code: 'ENTITY_NOT_FOUND'
                     }
                 })
             );
@@ -269,11 +269,13 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
+            console.log(res.body.errors[0]);
+
             expect(res.body.errors[0]).toEqual(
                 expect.objectContaining({
                     message: 'Movie Not Found',
                     extensions: {
-                        code: 'NOT_FOUND'
+                        code: 'ENTITY_NOT_FOUND'
                     }
                 })
             );

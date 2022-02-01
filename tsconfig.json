@@ -18,7 +18,8 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": false,
         "paths": {
-            "@commonErrors": ["src/common/errors/common-errors"]
+            "@customErrors": ["src/common/errors/custom-errors"],
+            "@common/*": ["src/common/*"]
         }
     },
     "exclude": ["dist"]

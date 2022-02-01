@@ -3,7 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions, Repository } from 'typeorm';
-import formatGraphQLError from '../src/common/graphql-error-formater';
+import formatGraphQLError from '../src/common/errors/graphql-error-formater';
 import { Content } from '../src/content/content.entity';
 import { ContentsModule } from '../src/content/contents.module';
 import { Movie } from '../src/content/movies/movie.entity';
