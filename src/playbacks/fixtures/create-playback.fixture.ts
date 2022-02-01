@@ -1,7 +1,6 @@
 import { CreatePlaybackInput } from '../dto/create-playback.input';
 
 const createPlaybackFixture: CreatePlaybackInput = {
-    id: 1,
     duration: 123,
     finished: false,
     started: true,

@@ -1,17 +1,18 @@
 import { ObjectType, Field, InputType, Int } from '@nestjs/graphql';
 import { Content } from '../content/content.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @InputType('LicenseInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
 @Entity()
 export class License {
     @Field(() => Int)
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Field(() => Int)
-    @PrimaryColumn()
+    @Column()
+    @Index()
     userId: number;
 
     @Field(() => Date, { nullable: true })

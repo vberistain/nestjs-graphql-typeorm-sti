@@ -25,21 +25,21 @@ describe('MoviesResolver', () => {
         });
     });
 
-    describe('findMovies', () => {
+    describe('movies', () => {
         it('should call MoviesService.findAll', async () => {
-            await resolver.findMovies();
+            await resolver.movies();
             expect(service.findAll).toHaveBeenCalledWith();
         });
     });
 
-    describe('findMovie', () => {
+    describe('movie', () => {
         it('should call MoviesService.findOne', async () => {
-            await resolver.findMovie(1);
+            await resolver.movie(1);
             expect(service.findOne).toHaveBeenCalledWith(1);
         });
     });
 
-    describe('update', () => {
+    describe('updateMovie', () => {
         it('should call MoviesService.update', async () => {
             const input: UpdateMovieInput = { id: movieFixture.id, title: 'Another title' };
             const res = await resolver.updateMovie(input);
@@ -47,7 +47,7 @@ describe('MoviesResolver', () => {
         });
     });
 
-    describe('delete', () => {
+    describe('deleteMovie', () => {
         it('should call MoviesService.delete', async () => {
             await resolver.removeMovie(1);
             expect(service.remove).toHaveBeenCalledWith(1);

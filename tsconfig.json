@@ -16,6 +16,10 @@
         "noImplicitAny": false,
         "strictBindCallApply": false,
         "forceConsistentCasingInFileNames": true,
-        "noFallthroughCasesInSwitch": false
-    }
+        "noFallthroughCasesInSwitch": false,
+        "paths": {
+            "@commonErrors": ["src/common/errors/common-errors"]
+        }
+    },
+    "exclude": ["dist"]
 }

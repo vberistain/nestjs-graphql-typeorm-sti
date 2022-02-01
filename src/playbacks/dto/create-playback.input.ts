@@ -1,8 +1,9 @@
-import { InputType, OmitType } from '@nestjs/graphql';
-import { Content } from '../../content/content.entity';
+import { Field, InputType, OmitType } from '@nestjs/graphql';
+import { IdOnlyEntity } from '../../content/playlists/dto/create-playlist.input';
 import { Playback } from '../playback.entity';
 
 @InputType()
-export class CreatePlaybackInput extends OmitType(Playback, ['content', 'createdAt', 'updatedAt']) {
-    content: Pick<Content, 'id'>;
+export class CreatePlaybackInput extends OmitType(Playback, ['id', 'content', 'createdAt', 'updatedAt']) {
+    @Field(() => IdOnlyEntity)
+    content: IdOnlyEntity;
 }

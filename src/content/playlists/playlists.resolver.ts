@@ -12,16 +12,16 @@ export class PlaylistsResolver {
 
     @Mutation(() => Playlist)
     async createPlaylist(@Args('createPlaylistInput') createPlaylistInput: CreatePlaylistInput) {
-        return await this.playlistsService.create(createPlaylistInput);
+        return this.playlistsService.create(createPlaylistInput);
     }
 
     @Query(() => [Playlist], { name: 'playlists' })
-    findPlaylists() {
+    playlists() {
         return this.playlistsService.findAll();
     }
 
     @Query(() => Playlist, { name: 'playlist' })
-    findPlaylist(@Args('id', { type: () => Int }) id: number) {
+    playlist(@Args('id', { type: () => Int }) id: number) {
         return this.playlistsService.findOne(id);
     }
 

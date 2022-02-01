@@ -3,6 +3,6 @@ import { Content } from '../../content/content.entity';
 import { License } from '../license.entity';
 
 @InputType()
-export class CreateLicenseInput extends OmitType(License, ['content']) {
+export class CreateLicenseInput extends OmitType(License, ['id', 'content']) {
     content: Pick<Content, 'id'>;
 }

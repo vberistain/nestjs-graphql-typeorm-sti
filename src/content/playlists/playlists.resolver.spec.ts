@@ -25,16 +25,16 @@ describe('PlaylistsResolver', () => {
         });
     });
 
-    describe('findPlaylists', () => {
+    describe('playlists', () => {
         it('should call PlaylistsService.findAll', async () => {
-            await resolver.findPlaylists();
+            await resolver.playlists();
             expect(service.findAll).toHaveBeenCalledWith();
         });
     });
 
-    describe('findPlaylist', () => {
+    describe('playlist', () => {
         it('should call PlaylistsService.findOne', async () => {
-            await resolver.findPlaylist(1);
+            await resolver.playlist(1);
             expect(service.findOne).toHaveBeenCalledWith(1);
         });
     });

@@ -13,7 +13,7 @@ export enum ContentType {
 @ObjectType({ isAbstract: true })
 @InputType('ContentInput', { isAbstract: true })
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type', select: true, enum: ContentType } })
+@TableInheritance({ column: { type: 'varchar', name: '_ctype', select: false } })
 export abstract class Content {
     @Field(() => Int)
     @PrimaryColumn()
@@ -28,7 +28,7 @@ export abstract class Content {
     description?: string;
 
     @Field(() => ContentType, { description: 'Content type' })
-    @Column({ type: 'enum', enum: ContentType })
+    @Column()
     type: ContentType;
 
     @Field(() => License, { nullable: true })
