@@ -320,7 +320,6 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            console.log(res.body.errors[0]);
 
             expect(res.body.errors[0]).toEqual(
                 expect.objectContaining({
