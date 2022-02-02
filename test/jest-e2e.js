@@ -9,5 +9,6 @@ module.exports = {
     transform: {
         '^.+\\.(t|j)s$': 'ts-jest'
     },
+    transformIgnorePatterns: ['^.+\\.js$'],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' })
 };
