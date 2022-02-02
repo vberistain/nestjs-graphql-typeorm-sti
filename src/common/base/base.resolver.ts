@@ -41,12 +41,13 @@ export function BaseResolver<Entity extends Type<unknown>, CreateEntity extends 
             return this.IBaseService.update(id, updateInput);
         }
 
-        @Mutation(() => classRef, { name: `remove${classRef.name}` })
+        @Mutation(() => Boolean, { name: `remove${classRef.name}` })
         async remove(
             @Args('id', { type: () => Int })
             id: number
-        ): Promise<void> {
-            return this.IBaseService.remove(id);
+        ): Promise<boolean> {
+            await this.IBaseService.remove(id);
+            return true;
         }
     }
     return BaseResolverHost;

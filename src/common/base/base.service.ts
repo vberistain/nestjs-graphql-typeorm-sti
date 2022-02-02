@@ -30,8 +30,11 @@ export class BaseService<Entity, CreateEntity, UpdateEntity> implements IBaseSer
         return entity;
     }
 
-    remove(id: number) {
-        return this.genericRepository.delete(id);
+    async remove(id: number) {
+        const res = await this.genericRepository.delete(id);
+        if (res.affected < 1) {
+            throw new EntityNotFoundError();
+        }
     }
 
     async update(id: number, entity: UpdateEntity): Promise<Entity> {
