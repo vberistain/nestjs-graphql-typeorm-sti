@@ -4,9 +4,9 @@ import { Playback } from '../../playbacks/playback.entity';
 import { Content, ContentType } from '../content.entity';
 
 @InputType({ isAbstract: true })
-@ObjectType('MovieObj', { isAbstract: true })
-@ChildEntity({ type: ContentType.movie })
-export class Movie extends Content {
+@ObjectType('LivestreamObj', { isAbstract: true })
+@ChildEntity({ type: ContentType.livestream })
+export class Livestream extends Content {
     @Field(() => Int)
     @Column()
     duration: number;

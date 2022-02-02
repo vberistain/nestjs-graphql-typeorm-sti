@@ -1,10 +1,24 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
 import { Content } from '../content/content.entity';
-import { Column, CreateDateColumn, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+    AfterLoad,
+    Column,
+    CreateDateColumn,
+    Entity,
+    Index,
+    JoinColumn,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    Unique,
+    UpdateDateColumn
+} from 'typeorm';
+import { Movie } from '../content/movies/movie.entity';
+import { Livestream } from '../content/livestream/livestream.entity';
 
 @InputType('PlaybackInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
 @Entity()
+@Unique(['userId', 'content'])
 export class Playback {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
@@ -24,7 +38,6 @@ export class Playback {
     finished: boolean;
 
     @Field()
-    @Column({ default: false })
     started: boolean;
 
     @Field(() => Int)
@@ -39,8 +52,19 @@ export class Playback {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @Field(() => Content)
-    @OneToOne(() => Content, (content) => content.playback)
+    @Field(() => Movie)
+    @OneToOne(() => Movie, (movie) => movie.playback, { eager: true })
+    @OneToOne(() => Livestream, (livestream) => livestream.playback, { eager: true })
     @JoinColumn()
-    content: Content;
+    content: Movie & Livestream;
+
+    @AfterLoad()
+    setStarted() {
+        this.started = this.position > 0;
+    }
+
+    @AfterLoad()
+    setFinished() {
+        this.finished = this.position < this.content.duration;
+    }
 }

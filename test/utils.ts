@@ -6,6 +6,8 @@ import { getConnectionOptions, Repository } from 'typeorm';
 import formatGraphQLError from '../src/common/errors/graphql-error-formater';
 import { Content } from '../src/content/content.entity';
 import { ContentsModule } from '../src/content/contents.module';
+import { Livestream } from '../src/content/livestream/livestream.entity';
+import { LivestreamsModule } from '../src/content/livestream/livestream.module';
 import { Movie } from '../src/content/movies/movie.entity';
 import { MoviesModule } from '../src/content/movies/movies.module';
 import { Playlist } from '../src/content/playlists/playlist.entity';
@@ -53,16 +55,16 @@ export async function createTestingAppModule(): Promise<{ app: INestApplication;
             TypeOrmModule.forRootAsync({
                 useFactory: async () =>
                     Object.assign(await getConnectionOptions(), {
-                        autoLoadEntities: true,
-                        type: 'sqlite',
-                        database: ':memory:',
+                        type: 'mysql',
+                        database: 'ticket-app-test',
                         synchronize: true,
-                        entities: [Movie, License, Playlist, Playback, Content]
+                        dropSchema: true,
+                        entities: [Movie, License, Playlist, Playback, Content, Livestream]
                     })
             }),
 
             GraphQLModule.forRoot({
-                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule],
+                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule, LivestreamsModule],
                 autoSchemaFile: true,
                 playground: false,
                 formatError: formatGraphQLError
@@ -70,6 +72,7 @@ export async function createTestingAppModule(): Promise<{ app: INestApplication;
             ContentsModule,
             PlaylistsModule,
             MoviesModule,
+            LivestreamsModule,
             LicensesModule,
             PlaybacksModule
         ]

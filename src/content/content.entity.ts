@@ -1,7 +1,6 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
 import { License } from '../licenses/license.entity';
 import { Column, Entity, OneToOne, PrimaryColumn, TableInheritance } from 'typeorm';
-import { Playback } from '../playbacks/playback.entity';
 
 export enum ContentType {
     movie = 'movie',
@@ -34,10 +33,6 @@ export abstract class Content {
     @Field(() => License, { nullable: true })
     @OneToOne(() => License, (license) => license.content)
     license?: License;
-
-    @Field(() => Playback, { nullable: true })
-    @OneToOne(() => Playback)
-    playback?: Playback;
 }
 
 registerEnumType(ContentType, {

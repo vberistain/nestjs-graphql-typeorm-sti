@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { EntityNotFoundError } from '../errors/custom-errors';
+import { EntityNotFoundError, RelatedEntityNotFoundError } from '../errors/custom-errors';
 
 export interface IBaseService<Entity, CreateEntity, UpdateEntity> {
     findAll(): Promise<Entity[]>;
@@ -38,10 +38,17 @@ export class BaseService<Entity, CreateEntity, UpdateEntity> implements IBaseSer
     }
 
     async update(id: number, entity: UpdateEntity): Promise<Entity> {
-        const res = await this.genericRepository.update(id, { ...entity });
-        if (res.affected < 1) {
-            throw new EntityNotFoundError('Entity Not Found');
+        try {
+            const res = await this.genericRepository.update(id, { ...entity });
+            if (res.affected < 1) {
+                throw new EntityNotFoundError('Entity Not Found');
+            }
+            return this.findOne(id);
+        } catch (e) {
+            if (e.code.includes('ER_NO_REFERENCED')) {
+                throw new RelatedEntityNotFoundError();
+            }
+            throw e;
         }
-        return this.findOne(id);
     }
 }

@@ -6,4 +6,16 @@ class EntityNotFoundError extends CustomError {
     }
 }
 
-export { EntityNotFoundError };
+class RelatedEntityNotFoundError extends CustomError {
+    constructor(message?: string) {
+        super(message || 'Related Entity Not Found', 'RELATED_ENTITY_NOT_FOUND', 'RelatedEntityNotFound');
+    }
+}
+
+class DuplicatedEntityError extends CustomError {
+    constructor(message?: string) {
+        super(message || 'Duplicated Entity', 'DUPLICATED_ENTITY', 'DuplicatedEntity');
+    }
+}
+
+export { EntityNotFoundError, RelatedEntityNotFoundError, DuplicatedEntityError };

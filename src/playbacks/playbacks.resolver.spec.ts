@@ -20,36 +20,36 @@ describe('PlaybacksResolver', () => {
 
     describe('createPlayback', () => {
         it('should call PlaybacksService.create', async () => {
-            await resolver.createPlayback(playbackFixture);
+            await resolver.create(playbackFixture);
             expect(service.create).toHaveBeenCalledWith(playbackFixture);
         });
     });
 
     describe('findPlaybacks', () => {
         it('should call PlaybacksService.findAll', async () => {
-            await resolver.findPlaybacks();
+            await resolver.findAll();
             expect(service.findAll).toHaveBeenCalledWith();
         });
     });
 
     describe('findPlayback', () => {
         it('should call PlaybacksService.findOne', async () => {
-            await resolver.findPlayback(1);
+            await resolver.findOne(1);
             expect(service.findOne).toHaveBeenCalledWith(1);
         });
     });
 
     describe('update', () => {
         it('should call PlaybacksService.update', async () => {
-            const input: UpdatePlaybackInput = { id: playbackFixture.id, duration: 123 };
-            await resolver.updatePlayback(input);
+            const input: UpdatePlaybackInput = { duration: 123 };
+            await resolver.update(1, input);
             expect(service.update).toHaveBeenCalledWith(playbackFixture.id, input);
         });
     });
 
     describe('delete', () => {
         it('should call PlaybacksService.delete', async () => {
-            await resolver.removePlayback(1);
+            await resolver.remove(1);
             expect(service.remove).toHaveBeenCalledWith(1);
         });
     });

@@ -125,7 +125,7 @@ describe('MovieResolver (e2e)', () => {
         });
     });
 
-    describe('findAllMovies', () => {
+    describe('movies', () => {
         it('should return all movies', async () => {
             await movieRepository.save(testMovie);
             await movieRepository.save(testMovie2);

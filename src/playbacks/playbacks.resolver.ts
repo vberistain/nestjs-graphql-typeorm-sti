@@ -3,35 +3,11 @@ import { PlaybacksService } from './playbacks.service';
 import { Playback } from './playback.entity';
 import { CreatePlaybackInput } from './dto/create-playback.input';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
-import { Inject } from '@nestjs/common';
+import { BaseResolver } from '../common/base/base.resolver';
 
 @Resolver(() => Playback)
-export class PlaybacksResolver {
-    @Inject()
-    private readonly playbacksService: PlaybacksService;
-
-    @Mutation(() => Playback)
-    createPlayback(@Args('createPlaybackInput') createPlaybackInput: CreatePlaybackInput) {
-        return this.playbacksService.create(createPlaybackInput);
-    }
-
-    @Query(() => [Playback], { name: 'playbacks' })
-    findPlaybacks() {
-        return this.playbacksService.findAll();
-    }
-
-    @Query(() => Playback, { name: 'playback' })
-    findPlayback(@Args('id', { type: () => Int }) id: number) {
-        return this.playbacksService.findOne(id);
-    }
-
-    @Mutation(() => Playback)
-    updatePlayback(@Args('updatePlaybackInput') updatePlaybackInput: UpdatePlaybackInput) {
-        return this.playbacksService.update(updatePlaybackInput.id, updatePlaybackInput);
-    }
-
-    @Mutation(() => Playback)
-    removePlayback(@Args('id', { type: () => Int }) id: number) {
-        return this.playbacksService.remove(id);
+export class PlaybacksResolver extends BaseResolver(Playback, CreatePlaybackInput, UpdatePlaybackInput) {
+    constructor(private readonly playbacksService: PlaybacksService) {
+        super(playbacksService);
     }
 }
