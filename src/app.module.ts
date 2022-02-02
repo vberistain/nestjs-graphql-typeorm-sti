@@ -13,7 +13,7 @@ import { PlaybacksModule } from './playbacks/playbacks.module';
         TypeOrmModule.forRoot({}),
         GraphQLModule.forRoot({
             include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule],
-            autoSchemaFile: true,
+            autoSchemaFile: 'schema.graphql',
             formatError: formatGraphQLError
         }),
         ContentsModule,

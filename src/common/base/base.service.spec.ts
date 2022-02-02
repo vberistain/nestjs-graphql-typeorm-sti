@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { repositoryMockFactory } from '../../../test/utils';
-import createMovieInputFixture from './fixtures/create-movie.fixture';
-import updateMovieInputFixture from './fixtures/update-movie.fixture';
-import { Movie } from './movie.entity';
-import movieFixture from './fixtures/movie.fixture';
-import { MoviesService } from './movies.service';
+import createMovieInputFixture from '../../content/movies/fixtures/create-movie.fixture';
+import updateMovieInputFixture from '../../content/movies/fixtures/update-movie.fixture';
+import { Movie } from '../../content/movies/movie.entity';
+import movieFixture from '../../content/movies/fixtures/movie.fixture';
+import { MoviesService } from '../../content/movies/movies.service';
 
 describe('MoviesService', () => {
     let service: MoviesService;
@@ -38,7 +38,7 @@ describe('MoviesService', () => {
     describe('findAll', () => {
         it('should call repository.find with the right parameters and return the result', async () => {
             const res = await service.findAll();
-            expect(repository.find).toHaveBeenCalledWith({});
+            expect(repository.find).toHaveBeenCalledWith();
             expect(res).toEqual([movieFixture]);
         });
     });

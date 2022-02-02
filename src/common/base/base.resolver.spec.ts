@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../../test/utils';
-import { UpdateMovieInput } from './dto/update-movie.input';
-import movieFixture from './fixtures/movie.fixture';
-import { MoviesResolver } from './movies.resolver';
-import { MoviesService } from './movies.service';
+import { UpdateMovieInput } from '../../content/movies/dto/update-movie.input';
+import movieFixture from '../../content/movies/fixtures/movie.fixture';
+import { MoviesResolver } from '../../content/movies/movies.resolver';
+import { MoviesService } from '../../content/movies/movies.service';
 
-describe('MoviesResolver', () => {
+describe('BaseResolver', () => {
     let resolver: MoviesResolver;
     let service: MoviesService;
 
@@ -20,36 +20,36 @@ describe('MoviesResolver', () => {
 
     describe('createMovie', () => {
         it('should call MoviesService.create', async () => {
-            await resolver.createMovie(movieFixture);
+            await resolver.create(movieFixture);
             expect(service.create).toHaveBeenCalledWith(movieFixture);
         });
     });
 
     describe('movies', () => {
         it('should call MoviesService.findAll', async () => {
-            await resolver.movies();
+            await resolver.findAll();
             expect(service.findAll).toHaveBeenCalledWith();
         });
     });
 
     describe('movie', () => {
         it('should call MoviesService.findOne', async () => {
-            await resolver.movie(1);
+            await resolver.findOne(1);
             expect(service.findOne).toHaveBeenCalledWith(1);
         });
     });
 
     describe('updateMovie', () => {
         it('should call MoviesService.update', async () => {
-            const input: UpdateMovieInput = { id: movieFixture.id, title: 'Another title' };
-            const res = await resolver.updateMovie(input);
+            const input: UpdateMovieInput = { title: 'Another title' };
+            const res = await resolver.update(movieFixture.id, input);
             expect(service.update).toHaveBeenCalledWith(movieFixture.id, input);
         });
     });
 
     describe('deleteMovie', () => {
         it('should call MoviesService.delete', async () => {
-            await resolver.removeMovie(1);
+            await resolver.remove(1);
             expect(service.remove).toHaveBeenCalledWith(1);
         });
     });

@@ -127,7 +127,7 @@ describe('MovieResolver (e2e)', () => {
         });
     });
 
-    describe('movies', () => {
+    describe('findAllMovies', () => {
         it('should return all movies', async () => {
             await movieRepository.save({
                 id: 1,
@@ -255,9 +255,10 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
+
             expect(res.body.errors[0]).toEqual(
                 expect.objectContaining({
-                    message: 'Movie Not Found',
+                    message: 'Entity Not Found',
                     extensions: {
                         code: 'ENTITY_NOT_FOUND'
                     }
@@ -278,7 +279,7 @@ describe('MovieResolver (e2e)', () => {
 
             const query = gql`
                 mutation {
-                    updateMovie(updateMovieInput: { id: 1, title: "Interstellar 2" }) {
+                    updateMovie(id: 1, updateMovieInput: { id: 1, title: "Interstellar 2" }) {
                         id
                         title
                         description
@@ -305,7 +306,7 @@ describe('MovieResolver (e2e)', () => {
         it('should return a not found error when updating a movie that doesnt exist', async () => {
             const query = gql`
                 mutation {
-                    updateMovie(updateMovieInput: { id: 1, title: "Interstellar 2" }) {
+                    updateMovie(id: 1, updateMovieInput: { title: "Interstellar 2" }) {
                         id
                         title
                         description
@@ -323,7 +324,7 @@ describe('MovieResolver (e2e)', () => {
 
             expect(res.body.errors[0]).toEqual(
                 expect.objectContaining({
-                    message: 'Movie Not Found',
+                    message: 'Entity Not Found',
                     extensions: {
                         code: 'ENTITY_NOT_FOUND'
                     }
