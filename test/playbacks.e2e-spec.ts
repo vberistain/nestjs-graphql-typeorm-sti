@@ -8,10 +8,10 @@ import { Playback } from '../src/playbacks/playback.entity';
 import { Connection, Repository } from 'typeorm';
 import { createTestingAppModule } from './utils';
 import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
-import { Movie } from '../src/content/movies/movie.entity';
+import { Movie } from '../src/contents/movies/movie.entity';
 import { CreatePlaybackInput } from '../src/playbacks/dto/create-playback.input';
-import { Livestream } from '../src/content/livestream/livestream.entity';
-import { ContentType } from '../src/content/content.entity';
+import { Livestream } from '../src/contents/livestreams/livestream.entity';
+import { ContentType } from '../src/contents/content.entity';
 
 const testPlayback: CreatePlaybackInput = {
     started: true,

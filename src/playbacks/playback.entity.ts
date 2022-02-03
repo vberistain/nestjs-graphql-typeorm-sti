@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
-import { Content } from '../content/content.entity';
+import { Content } from '../contents/content.entity';
 import {
     AfterLoad,
     Column,
@@ -12,8 +12,8 @@ import {
     Unique,
     UpdateDateColumn
 } from 'typeorm';
-import { Movie } from '../content/movies/movie.entity';
-import { Livestream } from '../content/livestream/livestream.entity';
+import { Movie } from '../contents/movies/movie.entity';
+import { Livestream } from '../contents/livestreams/livestream.entity';
 
 @InputType('PlaybackInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
@@ -56,7 +56,7 @@ export class Playback {
     @OneToOne(() => Movie, (movie) => movie.playback, { eager: true })
     @OneToOne(() => Livestream, (livestream) => livestream.playback, { eager: true })
     @JoinColumn()
-    content: Movie & Livestream;
+    content: Movie | Livestream;
 
     @AfterLoad()
     setStarted() {

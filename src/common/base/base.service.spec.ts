@@ -2,11 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { repositoryMockFactory } from '../../../test/utils';
-import createMovieInputFixture from '../../content/movies/fixtures/create-movie.fixture';
-import updateMovieInputFixture from '../../content/movies/fixtures/update-movie.fixture';
-import { Movie } from '../../content/movies/movie.entity';
-import movieFixture from '../../content/movies/fixtures/movie.fixture';
-import { MoviesService } from '../../content/movies/movies.service';
+import createMovieInputFixture from '../../contents/movies/fixtures/create-movie.fixture';
+import updateMovieInputFixture from '../../contents/movies/fixtures/update-movie.fixture';
+import { Movie } from '../../contents/movies/movie.entity';
+import movieFixture from '../../contents/movies/fixtures/movie.fixture';
+import { MoviesService } from '../../contents/movies/movies.service';
 
 describe('MoviesService', () => {
     let service: MoviesService;

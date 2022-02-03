@@ -3,10 +3,10 @@ import { ChildEntity, Column, OneToOne } from 'typeorm';
 import { Playback } from '../../playbacks/playback.entity';
 import { Content, ContentType } from '../content.entity';
 
-@InputType({ isAbstract: true })
-@ObjectType('LivestreamObj', { isAbstract: true })
-@ChildEntity({ type: ContentType.livestream })
-export class Livestream extends Content {
+@InputType('MovieInput', { isAbstract: true })
+@ObjectType('Movie')
+@ChildEntity({ type: ContentType.movie })
+export class Movie extends Content {
     @Field(() => Int)
     @Column()
     duration: number;

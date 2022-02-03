@@ -1,5 +1,5 @@
 import { ObjectType, Field, InputType, Int } from '@nestjs/graphql';
-import { Content } from '../content/content.entity';
+import { Content } from '../contents/content.entity';
 import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @InputType('LicenseInput', { isAbstract: true })

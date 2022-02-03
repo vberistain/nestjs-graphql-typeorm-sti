@@ -2,8 +2,8 @@ import { ObjectType, InputType, Field, Int } from '@nestjs/graphql';
 import { ChildEntity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import { Content } from '../content.entity';
 
-@InputType({ isAbstract: true })
-@ObjectType('Playlist', { isAbstract: true })
+@InputType('Playlistinput', { isAbstract: true })
+@ObjectType()
 @ChildEntity()
 export class Playlist extends Content {
     @Field(() => [Content])

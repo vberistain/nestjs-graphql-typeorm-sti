@@ -1,4 +1,4 @@
-import { ContentType } from '../../content/content.entity';
+import { ContentType } from '../../contents/content.entity';
 import { License } from '../license.entity';
 
 const licenseFixture: License = {

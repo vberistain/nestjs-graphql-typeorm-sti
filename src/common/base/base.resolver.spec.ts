@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../../test/utils';
-import { UpdateMovieInput } from '../../content/movies/dto/update-movie.input';
-import movieFixture from '../../content/movies/fixtures/movie.fixture';
-import { MoviesResolver } from '../../content/movies/movies.resolver';
-import { MoviesService } from '../../content/movies/movies.service';
+import { UpdateMovieInput } from '../../contents/movies/dto/update-movie.input';
+import movieFixture from '../../contents/movies/fixtures/movie.fixture';
+import { MoviesResolver } from '../../contents/movies/movies.resolver';
+import { MoviesService } from '../../contents/movies/movies.service';
 
 describe('BaseResolver', () => {
     let resolver: MoviesResolver;

@@ -5,7 +5,6 @@ import { Column, Entity, OneToOne, PrimaryColumn, TableInheritance } from 'typeo
 export enum ContentType {
     movie = 'movie',
     playlist = 'playlist',
-    bundle = 'bundle',
     livestream = 'livestream'
 }
 

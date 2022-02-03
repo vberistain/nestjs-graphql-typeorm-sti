@@ -1,4 +1,4 @@
-import { ContentType } from '../../content/content.entity';
+import { ContentType } from '../../contents/content.entity';
 import { Playback } from '../playback.entity';
 
 const playbackFixture: Omit<Playback, 'setStarted' | 'setFinished'> = {

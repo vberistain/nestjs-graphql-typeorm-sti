@@ -1,5 +1,5 @@
 import { InputType, OmitType } from '@nestjs/graphql';
-import { Content } from '../../content/content.entity';
+import { Content } from '../../contents/content.entity';
 import { License } from '../license.entity';
 
 @InputType()

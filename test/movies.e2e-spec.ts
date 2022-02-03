@@ -4,9 +4,9 @@ import * as request from 'supertest';
 import { gql } from 'apollo-server-express';
 import { print } from 'graphql';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Movie } from '../src/content/movies/movie.entity';
+import { Movie } from '../src/contents/movies/movie.entity';
 import { Connection, Repository } from 'typeorm';
-import { ContentType } from '../src/content/content.entity';
+import { ContentType } from '../src/contents/content.entity';
 import { createTestingAppModule } from './utils';
 
 const testMovie: Movie = {

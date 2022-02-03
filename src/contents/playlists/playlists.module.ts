@@ -9,4 +9,4 @@ import { PlaylistsResolver } from './playlists.resolver';
     imports: [TypeOrmModule.forFeature([Content, Playlist])],
     providers: [PlaylistsResolver, PlaylistsService]
 })
-export class PlaylistsModule { }
+export class PlaylistsModule {}
