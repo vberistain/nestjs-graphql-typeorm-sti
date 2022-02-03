@@ -8,7 +8,8 @@ import { MoviesModule } from './contents/movies/movies.module';
 import { PlaylistsModule } from './contents/playlists/playlists.module';
 import { LicensesModule } from './licenses/licenses.module';
 import { PlaybacksModule } from './playbacks/playbacks.module';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './security/auth/auth.module';
+import { SecurityModule } from './security/security.module';
 
 @Module({
     imports: [
@@ -26,7 +27,8 @@ import { AuthModule } from './auth/auth.module';
         MoviesModule,
         LicensesModule,
         PlaybacksModule,
-        AuthModule
+        AuthModule,
+        SecurityModule
     ]
 })
 export class AppModule {}

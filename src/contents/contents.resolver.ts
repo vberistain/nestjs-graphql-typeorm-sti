@@ -1,14 +1,15 @@
-import { Args, createUnionType, Int, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, createUnionType, Int, Resolver } from '@nestjs/graphql';
 import { Content, ContentType } from './content.entity';
 import { Query } from '@nestjs/graphql';
 import { Playlist } from './playlists/playlist.entity';
 import { Movie } from './movies/movie.entity';
-import { Inject, UseGuards } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ContentsService } from './contents.service';
 import { Livestream } from './livestreams/livestream.entity';
-import { CurrentUser, GqlAuthGuard } from '../auth/auth.guard';
-import { UserPayload } from '../auth/user-payload.entity';
-import { Auth } from '../auth/auth.decorator';
+import { User } from '../security/auth/auth.guard';
+import { UserPayload } from '../security/auth/user-payload.entity';
+import { Auth } from '../security/auth/auth.decorator';
+import { Signature } from '../security/signature/signature.decorator';
 
 export const ContentUnion = createUnionType({
     name: 'ContentUnion', // the name of the GraphQL union
@@ -39,8 +40,7 @@ export class ContentsResolver {
 
     @Query(() => [ContentUnion])
     @Auth()
-    async contents(@CurrentUser() user: UserPayload): Promise<typeof ContentUnion[]> {
-        console.log(user);
+    async contents(): Promise<typeof ContentUnion[]> {
         return this.contentsService.findAll();
     }
 }
