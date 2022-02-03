@@ -8,6 +8,7 @@ import { MoviesModule } from './contents/movies/movies.module';
 import { PlaylistsModule } from './contents/playlists/playlists.module';
 import { LicensesModule } from './licenses/licenses.module';
 import { PlaybacksModule } from './playbacks/playbacks.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -16,14 +17,16 @@ import { PlaybacksModule } from './playbacks/playbacks.module';
             include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule, LivestreamsModule, ContentsModule],
             autoSchemaFile: 'schema.graphql',
             formatError: formatGraphQLError,
-            sortSchema: false
+            sortSchema: false,
+            context: ({ req }) => ({ req })
         }),
         ContentsModule,
         PlaylistsModule,
         LivestreamsModule,
         MoviesModule,
         LicensesModule,
-        PlaybacksModule
+        PlaybacksModule,
+        AuthModule
     ]
 })
 export class AppModule {}
