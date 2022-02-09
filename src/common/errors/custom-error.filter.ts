@@ -6,7 +6,7 @@ import CustomError from './CustomError';
 @Catch(CustomError)
 export class CustomErrorFilter implements GqlExceptionFilter {
     catch(error: CustomError, host: ArgumentsHost) {
-        const gqlHost = GqlArgumentsHost.create(host);
+        GqlArgumentsHost.create(host);
         return new ApolloError(error.message, error.code);
     }
 }

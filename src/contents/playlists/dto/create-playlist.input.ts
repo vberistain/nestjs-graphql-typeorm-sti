@@ -1,4 +1,4 @@
-import { Field, InputType, Int, ObjectType, OmitType, PickType } from '@nestjs/graphql';
+import { Field, InputType, Int, OmitType } from '@nestjs/graphql';
 import { Playlist } from '../playlist.entity';
 
 @InputType()

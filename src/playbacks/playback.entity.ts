@@ -13,7 +13,6 @@ import {
     UpdateDateColumn
 } from 'typeorm';
 import { Movie } from '../contents/movies/movie.entity';
-import { Livestream } from '../contents/livestreams/livestream.entity';
 
 @InputType('PlaybackInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
@@ -54,9 +53,8 @@ export class Playback {
 
     @Field(() => Movie)
     @OneToOne(() => Movie, (movie) => movie.playback, { eager: true })
-    @OneToOne(() => Livestream, (livestream) => livestream.playback, { eager: true })
     @JoinColumn()
-    content: Movie | Livestream;
+    content: Movie;
 
     @AfterLoad()
     setStarted() {

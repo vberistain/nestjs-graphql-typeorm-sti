@@ -4,10 +4,9 @@ import { PlaybacksResolver } from './playbacks.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Content } from '../contents/content.entity';
 import { Playback } from './playback.entity';
-import { Livestream } from '../contents/livestreams/livestream.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Content, Playback, Livestream])],
+    imports: [TypeOrmModule.forFeature([Content, Playback])],
     providers: [PlaybacksResolver, PlaybacksService]
 })
 export class PlaybacksModule {}

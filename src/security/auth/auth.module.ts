@@ -1,15 +1,9 @@
-import { Module } from '@nestjs/common';
-import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from './jwt.strategy';
+import { Global, Module } from '@nestjs/common';
+import { AuthService } from './auth.service';
 
+@Global()
 @Module({
-    imports: [
-        PassportModule,
-        JwtModule.register({
-            signOptions: { expiresIn: '99999h' }
-        })
-    ],
-    providers: [JwtStrategy]
+    providers: [AuthService],
+    exports: [AuthService]
 })
 export class AuthModule {}

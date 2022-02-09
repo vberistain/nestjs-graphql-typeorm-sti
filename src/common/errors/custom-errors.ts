@@ -18,4 +18,10 @@ class DuplicatedEntityError extends CustomError {
     }
 }
 
-export { EntityNotFoundError, RelatedEntityNotFoundError, DuplicatedEntityError };
+class UnauthorizedError extends CustomError {
+    constructor(message?: string) {
+        super(message || 'Unauthorized', 'UNAUTHORIZED', 'Unauthorized');
+    }
+}
+
+export { EntityNotFoundError, RelatedEntityNotFoundError, DuplicatedEntityError, UnauthorizedError };
