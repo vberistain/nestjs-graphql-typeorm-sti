@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Movie } from './movie.entity';
-import { EntityNotFoundError } from '../../common/errors/custom-errors';
+import { EntityNotFoundError } from '@customErrors';
 import { CreateMovieInput } from './dto/create-movie.input';
 import { UpdateMovieInput } from './dto/update-movie.input';
-import { BaseService } from '../../common/base/base.service';
+import { BaseService } from '@common/base/base.service';
 
 interface DBFilters {
     [key: string]: any;

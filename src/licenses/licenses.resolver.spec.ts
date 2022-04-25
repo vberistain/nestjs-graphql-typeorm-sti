@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { serviceMockFactory } from '../../test/utils';
-import { GqlUserGuard } from '../security/auth/auth.guard';
+import { serviceMockFactory } from '@test/utils';
 import { AuthService } from '../security/auth/auth.service';
 import { UserPayload } from '../security/auth/user-payload';
 import { UpdateLicenseInput } from './dto/update-license.input';

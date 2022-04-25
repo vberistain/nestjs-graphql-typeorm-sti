@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { repositoryMockFactory } from '../../../test/utils';
+import { repositoryMockFactory } from '@test/utils';
 import { Bundle } from './bundle.entity';
 import { BundlesService } from './bundles.service';
 import bundleFixture from './fixtures/playlist.fixture';

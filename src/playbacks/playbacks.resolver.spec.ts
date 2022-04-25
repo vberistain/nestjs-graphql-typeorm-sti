@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { serviceMockFactory } from '../../test/utils';
+import { serviceMockFactory } from '@test/utils';
 import { AuthService } from '../security/auth/auth.service';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
 import playbackFixture from './fixtures/playback.fixture';

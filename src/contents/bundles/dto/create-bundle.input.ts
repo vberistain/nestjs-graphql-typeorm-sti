@@ -1,5 +1,5 @@
-import { InputType, Int, Field, OmitType } from '@nestjs/graphql';
-import { IdOnlyEntity } from '../../../common/utils';
+import { InputType, Field, OmitType } from '@nestjs/graphql';
+import { IdOnlyEntity } from '@common/utils';
 import { Bundle } from '../bundle.entity';
 
 @InputType()

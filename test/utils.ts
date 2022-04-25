@@ -1,11 +1,10 @@
 import { INestApplication, LoggerService } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Bundle } from '../src/contents/bundles/bundle.entity';
-import { BundlesModule } from '../src/contents/bundles/bundles.module';
-import formatGraphQLError from '../src/common/errors/graphql-error-formater';
+import formatGraphQLError from '@common/errors/graphql-error-formater';
 import { Content } from '../src/contents/content.entity';
 import { ContentsModule } from '../src/contents/contents.module';
 import { Movie } from '../src/contents/movies/movie.entity';
@@ -20,6 +19,7 @@ import { AuthModule } from '../src/security/auth/auth.module';
 import { SecurityModule } from '../src/security/security.module';
 import { MovieSubscriber } from '../src/contents/movies/movie.subscriber';
 import { ContentSubscriber } from '../src/contents/content.subscriber';
+import { BundlesModule } from '../src/contents/bundles/bundles.module';
 
 export type MockType<T> = {
     [P in keyof T]?: jest.Mock<{}>;

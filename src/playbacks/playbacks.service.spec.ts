@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { repositoryMockFactory, repositorySpies } from '../../test/utils';
+import { repositoryMockFactory, repositorySpies } from '@test/utils';
 import { AuthService } from '../security/auth/auth.service';
 import createPlaybackInputFixture from './fixtures/create-playback.fixture';
 import playbackFixture from './fixtures/playback.fixture';

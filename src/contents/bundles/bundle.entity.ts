@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
+import { ObjectType, Field, InputType } from '@nestjs/graphql';
 import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
 import { Content, ContentType } from '../content.entity';
 import { ContentUnion } from '../contents.resolver';

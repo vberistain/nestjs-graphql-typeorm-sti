@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
-import { AfterLoad, ChildEntity, Column, OneToMany, OneToOne } from 'typeorm';
+import { ChildEntity, Column, OneToMany } from 'typeorm';
 import { Playback } from '../../playbacks/playback.entity';
 import { Content, ContentType } from '../content.entity';
 

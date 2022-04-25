@@ -1,4 +1,4 @@
-import { EntitySubscriberInterface, EventSubscriber, LoadEvent } from 'typeorm';
+import { EntitySubscriberInterface, EventSubscriber } from 'typeorm';
 import { Movie } from './movie.entity';
 
 @EventSubscriber()

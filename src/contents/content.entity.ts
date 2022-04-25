@@ -1,7 +1,6 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
 import { License } from '../licenses/license.entity';
-import { AfterLoad, Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryColumn, TableInheritance } from 'typeorm';
-import { Playlist } from './playlists/playlist.entity';
+import { Column, Entity, OneToMany, PrimaryColumn, TableInheritance } from 'typeorm';
 
 export enum ContentType {
     movie = 'movie',

@@ -7,9 +7,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { IBundle } from './bundle.interface';
 import { ContentType } from '../content.entity';
-import { AuthService } from '../../security/auth/auth.service';
+import { AuthService } from '@security/auth/auth.service';
 import { Bundle } from './bundle.entity';
-import { clearDB, createTestingAppModule } from '../../../test/utils';
+import { clearDB, createTestingAppModule } from '@test/utils';
 import { IMovie } from '../movies/movie.interface';
 import { Movie } from '../movies/movie.entity';
 
@@ -109,7 +109,8 @@ describe('BundleResolver (e2e)', () => {
         it('should update a bundle when already in the database', async () => {
             await movieRepository.save(testMovie);
             await movieRepository.save(testMovie2);
-            const a = await bundleRepository.save(testBundle);
+            await bundleRepository.save(testBundle);
+
             const mutation = gql`
                 mutation {
                     createBundle(

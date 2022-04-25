@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { BundlesService } from './bundles.service';
+import { BaseResolver } from '@common/base/base.resolver';
 import { Bundle } from './bundle.entity';
 import { CreateBundleInput } from './dto/create-bundle.input';
-import { BaseResolver } from '../../common/base/base.resolver';
 import { UpdateBundleInput } from './dto/update-bundle.input';
 
 @Resolver(() => Bundle)

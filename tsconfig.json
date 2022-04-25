@@ -19,7 +19,9 @@
         "noFallthroughCasesInSwitch": false,
         "paths": {
             "@customErrors": ["src/common/errors/custom-errors"],
-            "@common/*": ["src/common/*"]
+            "@common/*": ["src/common/*"],
+            "@test/*": ["test/*"],
+            "@security/*": ["src/security/*"]
         }
     },
     "exclude": ["dist"]

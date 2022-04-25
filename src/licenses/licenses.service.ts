@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DuplicatedEntityError } from '../common/errors/custom-errors';
+import { DuplicatedEntityError } from '@customErrors';
 import MySQLErrors from '../common/errors/mysql-errors';
 import { UpdatePlaybackInput } from '../playbacks/dto/update-playback.input';
 import { CreateLicenseInput } from './dto/create-license.input';

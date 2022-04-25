@@ -1,8 +1,7 @@
 import { Resolver } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
-import { serviceMockFactory } from '../../../test/utils';
-import { AuthService } from '../../security/auth/auth.service';
-import { userPayload } from '../../security/auth/user-payload.fixture';
+import { serviceMockFactory } from '@test/utils';
+import { AuthService } from '@security/auth/auth.service';
 import { BaseResolver } from './base.resolver';
 import { BaseService } from './base.service';
 
@@ -68,7 +67,7 @@ describe('BaseResolver', () => {
     describe('update', () => {
         it('should call BaseService.update', async () => {
             const input: EntityUpdateInput = { prop: 'Some prop' };
-            const res = await resolver.update(entityFixture.id, input);
+            await resolver.update(entityFixture.id, input);
             expect(service.update).toHaveBeenCalledWith(entityFixture.id, input);
         });
     });

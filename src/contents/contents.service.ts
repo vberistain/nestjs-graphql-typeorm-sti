@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { createQueryBuilder, DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { ContentUnion } from './contents.resolver';
-import { EntityNotFoundError } from '../common/errors/custom-errors';
+import { EntityNotFoundError } from '@customErrors';
 import { Playlist } from './playlists/playlist.entity';
 import { Movie } from './movies/movie.entity';
 import { Content } from './content.entity';

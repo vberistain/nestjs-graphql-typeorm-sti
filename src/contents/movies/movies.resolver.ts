@@ -3,11 +3,11 @@ import { CreateMovieInput } from './dto/create-movie.input';
 import { UpdateMovieInput } from './dto/update-movie.input';
 import { Movie } from './movie.entity';
 import { MoviesService } from './movies.service';
-import { BaseResolver } from '../../common/base/base.resolver';
-import { CustomErrorFilter } from '../../common/errors/custom-error.filter';
+import { BaseResolver } from '@common/base/base.resolver';
+import { CustomErrorFilter } from '@common/errors/custom-error.filter';
 import { UseFilters, UseGuards } from '@nestjs/common';
-import { GqlUserGuard, User } from '../../security/auth/auth.guard';
-import { UserPayload } from '../../security/auth/user-payload';
+import { GqlUserGuard, User } from '@security/auth/auth.guard';
+import { UserPayload } from '@security/auth/user-payload';
 
 @Resolver(() => Movie)
 @UseFilters(new CustomErrorFilter())

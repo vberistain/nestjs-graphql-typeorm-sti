@@ -1,5 +1,5 @@
 import { Field, InputType, OmitType } from '@nestjs/graphql';
-import { IdOnlyEntity } from '../../common/utils';
+import { IdOnlyEntity } from '@common/utils';
 import { Playback } from '../playback.entity';
 
 @InputType()

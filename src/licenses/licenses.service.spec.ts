@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { repositorySpies, repositoryMockFactory } from '../../test/utils';
+import { repositorySpies, repositoryMockFactory } from '@test/utils';
 import { AuthService } from '../security/auth/auth.service';
 import createLicenseInputFixture from './fixtures/create-license.fixture';
 import licenseFixture from './fixtures/license.fixture';
@@ -57,7 +57,7 @@ describe('LicensesService', () => {
         });
 
         it('should call repository.findOne with the right parameters', async () => {
-            const res = await service.findOne(1, {}, [], undefined);
+            await service.findOne(1, {}, [], undefined);
             expect(repositorySpies.createQueryBuilder.where).toHaveBeenCalledWith(`license.id = :id`, { id: 1 });
             expect(repositorySpies.createQueryBuilder.leftJoinAndSelect).toHaveBeenCalledTimes(0);
             expect(repositorySpies.createQueryBuilder.getOne).toHaveBeenCalledWith();

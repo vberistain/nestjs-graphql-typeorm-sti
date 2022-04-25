@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { serviceMockFactory } from '../../../test/utils';
+import { serviceMockFactory } from '@test/utils';
 import { UpdatePlaylistInput } from './dto/update-playlist.input';
 import playlistFixture from './fixtures/playlist.fixture';
 import { PlaylistsResolver } from './playlists.resolver';

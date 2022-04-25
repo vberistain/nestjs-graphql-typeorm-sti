@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DeepPartial, Entity, FindManyOptions, FindOneOptions, FindOptionsWhere, In, QueryBuilder, Repository } from 'typeorm';
-import { EntityNotFoundError, RelatedEntityNotFoundError } from '../errors/custom-errors';
+import { FindOptionsWhere, In, Repository } from 'typeorm';
+import { EntityNotFoundError, RelatedEntityNotFoundError } from '@customErrors';
 import MySQLErrors from '../errors/mysql-errors';
 
 export interface IBaseService<Entity, CreateEntity, UpdateEntity> {
