@@ -1,10 +1,12 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
 import { License } from '../licenses/license.entity';
-import { AfterLoad, Column, Entity, OneToMany, OneToOne, PrimaryColumn, TableInheritance } from 'typeorm';
+import { AfterLoad, Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryColumn, TableInheritance } from 'typeorm';
+import { Playlist } from './playlists/playlist.entity';
 
 export enum ContentType {
     movie = 'movie',
-    playlist = 'playlist'
+    playlist = 'playlist',
+    bundle = 'bundle'
 }
 
 @ObjectType({ isAbstract: true })
@@ -39,13 +41,6 @@ export abstract class Content {
 
     @Field(() => License, { nullable: true })
     license?: License;
-
-    @AfterLoad()
-    setLicense() {
-        if (this.licenses) {
-            this.license = this.licenses[0];
-        }
-    }
 }
 
 registerEnumType(ContentType, {

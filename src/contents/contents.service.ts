@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { createQueryBuilder, DataSource, Repository } from 'typeorm';
-import { getDataSourceToken, getRepositoryToken, InjectDataSource } from '@nestjs/typeorm';
+import { createQueryBuilder, DataSource } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { ContentUnion } from './contents.resolver';
 import { EntityNotFoundError } from '../common/errors/custom-errors';
 import { Playlist } from './playlists/playlist.entity';

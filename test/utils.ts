@@ -3,6 +3,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
+import { Bundle } from '../src/contents/bundles/bundle.entity';
+import { BundlesModule } from '../src/contents/bundles/bundles.module';
 import formatGraphQLError from '../src/common/errors/graphql-error-formater';
 import { Content } from '../src/contents/content.entity';
 import { ContentsModule } from '../src/contents/contents.module';
@@ -16,6 +18,8 @@ import { Playback } from '../src/playbacks/playback.entity';
 import { PlaybacksModule } from '../src/playbacks/playbacks.module';
 import { AuthModule } from '../src/security/auth/auth.module';
 import { SecurityModule } from '../src/security/security.module';
+import { MovieSubscriber } from '../src/contents/movies/movie.subscriber';
+import { ContentSubscriber } from '../src/contents/content.subscriber';
 
 export type MockType<T> = {
     [P in keyof T]?: jest.Mock<{}>;
@@ -103,15 +107,16 @@ export async function createTestingAppModule(): Promise<{ app: INestApplication;
                     password: 'root',
                     port: 3306,
                     database: 'ticket-app-test',
-                    synchronize: false,
+                    synchronize: true,
                     migrationsRun: false,
                     dropSchema: false,
-                    entities: [Movie, License, Playlist, Playback, Content]
+                    entities: [Content, Movie, Playlist, Playback, License, Bundle],
+                    subscribers: [MovieSubscriber, ContentSubscriber]
                 })
             }),
 
             GraphQLModule.forRoot({
-                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule],
+                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule, BundlesModule, ContentsModule],
                 autoSchemaFile: true,
                 playground: false,
                 formatError: formatGraphQLError,

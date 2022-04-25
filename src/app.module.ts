@@ -12,9 +12,12 @@ import { License } from './licenses/license.entity';
 import { LicensesModule } from './licenses/licenses.module';
 import { Playback } from './playbacks/playback.entity';
 import { PlaybacksModule } from './playbacks/playbacks.module';
-import { PlaybacksService } from './playbacks/playbacks.service';
 import { AuthModule } from './security/auth/auth.module';
 import { SecurityModule } from './security/security.module';
+import { BundlesModule } from './contents/bundles/bundles.module';
+import { Bundle } from './contents/bundles/bundle.entity';
+import { MovieSubscriber } from './contents/movies/movie.subscriber';
+import { ContentSubscriber } from './contents/content.subscriber';
 
 @Module({
     imports: [
@@ -25,15 +28,16 @@ import { SecurityModule } from './security/security.module';
             password: 'root',
             port: 3306,
             database: 'ticket-app',
-            entities: [Content, Movie, Playlist, Playback, License],
+            entities: [Content, Movie, Playlist, Playback, License, Bundle],
+            subscribers: [MovieSubscriber, ContentSubscriber],
             synchronize: true,
             logging: false,
             migrations: ['dist/migrations/*.js']
         }),
         GraphQLModule.forRootAsync({
-            imports: [PlaybacksModule],
+            imports: [],
             useFactory: () => ({
-                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule, ContentsModule],
+                include: [PlaylistsModule, MoviesModule, LicensesModule, PlaybacksModule, ContentsModule, BundlesModule],
                 autoSchemaFile: 'schema.graphql',
                 formatError: formatGraphQLError,
                 sortSchema: false,
@@ -45,6 +49,7 @@ import { SecurityModule } from './security/security.module';
         }),
         ContentsModule,
         LicensesModule,
+        // BundlesModule,
         PlaybacksModule,
         SecurityModule,
         AuthModule

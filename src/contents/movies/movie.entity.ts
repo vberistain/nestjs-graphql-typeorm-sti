@@ -16,11 +16,4 @@ export class Movie extends Content {
 
     @Field(() => Playback, { nullable: true })
     playback?: Playback;
-
-    @AfterLoad()
-    setPlayback() {
-        if (this.playbacks) {
-            this.playback = this.playbacks[0];
-        }
-    }
 }
