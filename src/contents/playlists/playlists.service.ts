@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Content, ContentType } from '../content.entity';
 import { CreatePlaylistInput } from './dto/create-playlist.input';
 import { UpdatePlaylistInput } from './dto/update-playlist.input';
 import { Playlist } from './playlist.entity';
@@ -11,11 +10,9 @@ export class PlaylistsService {
     @InjectRepository(Playlist)
     private readonly playlistRepository: Repository<Playlist>;
 
-    @InjectRepository(Content)
-    private readonly contentRepository: Repository<Content>;
-
-    create(createPlaylistInput: CreatePlaylistInput) {
-        return this.playlistRepository.save({ ...createPlaylistInput, type: ContentType.playlist });
+    async create(createPlaylistInput: CreatePlaylistInput) {
+        await this.playlistRepository.save(createPlaylistInput);
+        return this.playlistRepository.findOne({ where: { id: createPlaylistInput.id }, relations: ['contents'] });
     }
 
     findAll() {
@@ -23,7 +20,7 @@ export class PlaylistsService {
     }
 
     findOne(id: number) {
-        return this.playlistRepository.findOne(id, { relations: ['contents'] });
+        return this.playlistRepository.findOne({ where: { id }, relations: ['contents'] });
     }
 
     update(id: number, updateContentInput: UpdatePlaylistInput) {

@@ -8,9 +8,7 @@ export class IdOnlyEntity {
 }
 
 @InputType()
-export class CreatePlaylistInput extends OmitType(Playlist, ['contents', 'license'] as const) {
+export class CreatePlaylistInput extends OmitType(Playlist, ['contents', 'type', 'licenses', 'license', 'setLicense'] as const) {
     @Field(() => [IdOnlyEntity])
     contents: IdOnlyEntity[];
-    @Field(() => IdOnlyEntity, { nullable: true })
-    license?: IdOnlyEntity;
 }

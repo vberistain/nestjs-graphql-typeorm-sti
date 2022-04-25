@@ -19,7 +19,7 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest  --config ./test/jest-e2e.js",
-        "test:e2e:watch": "jest --config ./test/jest-e2e.js --watch",
+        "test:e2e:watch": "jest --config ./test/jest-e2e.js --watch --runInBand",
         "typeorm": "node -r ts-node/register -r tsconfig-paths/register  ./node_modules/typeorm/cli.js",
         "db:uml": "NODE_ENV=development ts-node -r tsconfig-paths/register --project=tsconfig.js ./node_modules/.bin/typeorm-uml ormconfig.json -d uml.png -f png",
         "prepare": "husky install"
@@ -31,11 +31,14 @@
         "@nestjs/jwt": "^8.0.0",
         "@nestjs/passport": "^8.1.0",
         "@nestjs/platform-express": "^8.0.0",
-        "@nestjs/typeorm": "^8.0.2",
+        "@nestjs/typeorm": "^9.0.0-next.2",
+        "@types/deepmerge": "^2.2.0",
         "apollo-server-express": "^3.6.1",
         "dataloader": "^2.0.0",
+        "deepmerge": "^4.2.2",
         "graphql": "^15.8.0",
         "graphql-middleware": "^6.1.13",
+        "moment": "^2.29.1",
         "mysql2": "^2.3.3",
         "passport": "^0.5.2",
         "passport-jwt": "^4.0.0",
@@ -44,7 +47,8 @@
         "rxjs": "^7.2.0",
         "signature-module": "^0.5.9",
         "sqlite3": "^5.0.2",
-        "typeorm": "^0.2.41"
+        "typeorm": "^0.3.6",
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@nestjs/cli": "^8.0.0",

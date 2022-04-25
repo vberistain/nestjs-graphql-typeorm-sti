@@ -1,7 +1,7 @@
 import { ContentType } from '../../contents/content.entity';
-import { License } from '../license.entity';
+import { ILicense } from '../license.interface';
 
-const licenseFixture: License = {
+const licenseFixture: ILicense = {
     id: 1,
     userId: 12,
     expireDate: new Date(21, 3, 3),

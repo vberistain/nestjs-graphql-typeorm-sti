@@ -1,54 +1,80 @@
+import { Resolver } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../../test/utils';
-import { UpdateMovieInput } from '../../contents/movies/dto/update-movie.input';
-import movieFixture from '../../contents/movies/fixtures/movie.fixture';
-import { MoviesResolver } from '../../contents/movies/movies.resolver';
-import { MoviesService } from '../../contents/movies/movies.service';
+import { AuthService } from '../../security/auth/auth.service';
+import { userPayload } from '../../security/auth/user-payload.fixture';
+import { BaseResolver } from './base.resolver';
+import { BaseService } from './base.service';
+
+class TestEntity {
+    id: number;
+    prop: string;
+}
+
+class EntityCreateInput {
+    prop: string;
+}
+
+class EntityUpdateInput {
+    prop: string;
+}
+
+const entityFixture = {
+    id: 1,
+    prop: 'Prop'
+};
+
+@Resolver(() => TestEntity)
+class TestResolver extends BaseResolver(TestEntity, EntityCreateInput, EntityUpdateInput) {
+    constructor(private readonly baseService: BaseService<TestEntity, EntityCreateInput, EntityUpdateInput>) {
+        super(baseService);
+    }
+}
 
 describe('BaseResolver', () => {
-    let resolver: MoviesResolver;
-    let service: MoviesService;
+    let resolver: TestResolver;
+    let service: BaseService<TestEntity, EntityCreateInput, EntityUpdateInput>;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [MoviesResolver, { provide: MoviesService, useFactory: serviceMockFactory(movieFixture) }]
+            providers: [TestResolver, AuthService, { provide: BaseService, useFactory: serviceMockFactory(entityFixture) }]
         }).compile();
 
-        resolver = module.get<MoviesResolver>(MoviesResolver);
-        service = module.get<MoviesService>(MoviesService);
+        resolver = module.get<TestResolver>(TestResolver);
+        service = module.get<BaseService<TestEntity, EntityCreateInput, EntityUpdateInput>>(BaseService);
     });
 
-    describe('createMovie', () => {
-        it('should call MoviesService.create', async () => {
-            await resolver.create(movieFixture);
-            expect(service.create).toHaveBeenCalledWith(movieFixture);
+    describe('createTestEntity', () => {
+        it('should call BaseService.create', async () => {
+            await resolver.create(entityFixture);
+            expect(service.create).toHaveBeenCalledWith(entityFixture);
         });
     });
 
-    describe('movies', () => {
-        it('should call MoviesService.findAll', async () => {
+    describe('testentitys', () => {
+        it('should call BaseService.findAll', async () => {
             await resolver.findAll();
             expect(service.findAll).toHaveBeenCalledWith();
         });
     });
 
-    describe('movie', () => {
-        it('should call MoviesService.findOne', async () => {
+    describe('testentity', () => {
+        it('should call BaseService.findOne', async () => {
             await resolver.findOne(1);
             expect(service.findOne).toHaveBeenCalledWith(1);
         });
     });
 
-    describe('updateMovie', () => {
-        it('should call MoviesService.update', async () => {
-            const input: UpdateMovieInput = { title: 'Another title' };
-            const res = await resolver.update(movieFixture.id, input);
-            expect(service.update).toHaveBeenCalledWith(movieFixture.id, input);
+    describe('update', () => {
+        it('should call BaseService.update', async () => {
+            const input: EntityUpdateInput = { prop: 'Some prop' };
+            const res = await resolver.update(entityFixture.id, input);
+            expect(service.update).toHaveBeenCalledWith(entityFixture.id, input);
         });
     });
 
-    describe('deleteMovie', () => {
-        it('should call MoviesService.delete', async () => {
+    describe('deleteBase', () => {
+        it('should call BaseService.delete', async () => {
             await resolver.remove(1);
             expect(service.remove).toHaveBeenCalledWith(1);
         });

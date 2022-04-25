@@ -1,10 +1,10 @@
-import { ObjectType, InputType, Field, Int } from '@nestjs/graphql';
-import { ChildEntity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
-import { Content } from '../content.entity';
+import { ObjectType, InputType, Field } from '@nestjs/graphql';
+import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
+import { Content, ContentType } from '../content.entity';
 
 @InputType('Playlistinput', { isAbstract: true })
 @ObjectType()
-@ChildEntity()
+@ChildEntity(ContentType.playlist)
 export class Playlist extends Content {
     @Field(() => [Content])
     @ManyToMany(() => Content, { nullable: true })

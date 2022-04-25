@@ -5,8 +5,7 @@ const createMovieInputFixture: CreateMovieInput = {
     duration: 123,
     id: 1,
     title: 'Title',
-    description: 'Description',
-    type: ContentType.movie
+    description: 'Description'
 };
 
 export default createMovieInputFixture;

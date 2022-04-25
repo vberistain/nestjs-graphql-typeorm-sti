@@ -1,10 +1,10 @@
 import { ContentType } from '../../content.entity';
-import { Movie } from '../movie.entity';
+import { IMovie } from '../movie.interface';
 
-const movieFixture: Movie = {
-    duration: 123,
+const movieFixture: IMovie = {
     id: 1,
     title: 'Title',
+    duration: 123,
     description: 'Description',
     type: ContentType.movie
 };

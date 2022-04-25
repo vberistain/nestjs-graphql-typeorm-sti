@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BaseService } from '../common/base/base.service';
-import { DuplicatedEntityError, EntityNotFoundError, RelatedEntityNotFoundError } from '../common/errors/custom-errors';
+import { DuplicatedEntityError, RelatedEntityNotFoundError } from '../common/errors/custom-errors';
 import { CreatePlaybackInput } from './dto/create-playback.input';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
 import { Playback } from './playback.entity';
@@ -18,8 +18,7 @@ export class PlaybacksService extends BaseService<Playback, CreatePlaybackInput,
 
     async create(createPlaybackInput: CreatePlaybackInput) {
         try {
-            const res = await this.playbacksRepository.save(createPlaybackInput);
-            return res;
+            return await this.playbacksRepository.save(createPlaybackInput);
         } catch (e: any) {
             if (e.code === 'ER_DUP_ENTRY') {
                 throw new DuplicatedEntityError();

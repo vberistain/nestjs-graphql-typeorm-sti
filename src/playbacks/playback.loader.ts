@@ -10,7 +10,6 @@ export function createPlaybackLoader(playbackService: PlaybacksService) {
                 items.map((item) => item.id),
                 { userId: items[0].userId }
             );
-            console.log(playbacks);
             const playbacksMap = mapFromArray(playbacks, (playback) => playback.id);
             return items.map((item) => playbacksMap[item.id]);
         }

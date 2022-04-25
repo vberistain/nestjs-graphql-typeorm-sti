@@ -1,6 +1,6 @@
 import { CanActivate, createParamDecorator, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { UserPayload } from './user-payload.entity';
+import { UserPayload } from './user-payload';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -8,15 +8,12 @@ export class GqlUserGuard implements CanActivate {
     constructor(@Inject(AuthService) private readonly authService: AuthService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        console.log('RUN');
         const ctx = GqlExecutionContext.create(context);
         const { req } = ctx.getContext();
         try {
             const token = await this.authService.verifyTokenFromRequest(req);
             req.user = token;
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) {}
         return true;
     }
 }

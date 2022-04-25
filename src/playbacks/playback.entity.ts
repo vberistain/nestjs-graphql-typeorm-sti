@@ -1,5 +1,4 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
-import { Content } from '../contents/content.entity';
 import {
     AfterLoad,
     Column,
@@ -7,18 +6,19 @@ import {
     Entity,
     Index,
     JoinColumn,
-    OneToOne,
+    ManyToOne,
     PrimaryGeneratedColumn,
     Unique,
     UpdateDateColumn
 } from 'typeorm';
 import { Movie } from '../contents/movies/movie.entity';
+import { IPlayback } from './playback.interface';
 
 @InputType('PlaybackInput', { isAbstract: true })
 @ObjectType({ isAbstract: true })
 @Entity()
 @Unique(['userId', 'content'])
-export class Playback {
+export class Playback implements IPlayback {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
@@ -52,7 +52,7 @@ export class Playback {
     updatedAt: Date;
 
     @Field(() => Movie)
-    @OneToOne(() => Movie, (movie) => movie.playback, { eager: true })
+    @ManyToOne(() => Movie, (movie) => movie.playbacks, { eager: true })
     @JoinColumn()
     content: Movie;
 
@@ -63,6 +63,8 @@ export class Playback {
 
     @AfterLoad()
     setFinished() {
-        this.finished = this.position < this.content.duration;
+        if (this.content) {
+            this.finished = this.position < this.content.duration;
+        }
     }
 }

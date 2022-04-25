@@ -1,7 +1,7 @@
 import { ContentType } from '../../content.entity';
-import { Playlist } from '../playlist.entity';
+import { IPlaylist } from '../playlist.interface';
 
-const playlistFixture: Playlist = {
+const playlistFixture: IPlaylist = {
     id: 1,
     title: 'Title',
     description: 'Description',

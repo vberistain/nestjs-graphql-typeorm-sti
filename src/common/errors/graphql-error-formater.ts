@@ -5,7 +5,7 @@ export default function formatGraphQLError(error: GraphQLError): GraphQLFormatte
         message: error.message,
         path: error.path,
         extensions: {
-            code: error.extensions?.code,
+            code: error.extensions?.exception?.code || error.extensions?.code,
             errorCode: error.extensions?.errorCode
         }
     };

@@ -1,7 +1,7 @@
 import { ContentType } from '../../contents/content.entity';
-import { Playback } from '../playback.entity';
+import { IPlayback } from '../playback.interface';
 
-const playbackFixture: Omit<Playback, 'setStarted' | 'setFinished'> = {
+const playbackFixture: IPlayback = {
     id: 1,
     createdAt: new Date(21, 3, 2),
     updatedAt: new Date(21, 3, 3),
@@ -15,7 +15,7 @@ const playbackFixture: Omit<Playback, 'setStarted' | 'setFinished'> = {
         title: 'Title',
         description: 'Description',
         type: ContentType.movie,
-        duration: 123
+        duration: 12
     }
 };
 

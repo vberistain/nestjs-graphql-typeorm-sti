@@ -1,68 +1,63 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { repositoryMockFactory } from '../../../test/utils';
-import createMovieInputFixture from '../../contents/movies/fixtures/create-movie.fixture';
-import updateMovieInputFixture from '../../contents/movies/fixtures/update-movie.fixture';
-import { Movie } from '../../contents/movies/movie.entity';
-import movieFixture from '../../contents/movies/fixtures/movie.fixture';
-import { MoviesService } from '../../contents/movies/movies.service';
+import { entityFixture, TestEntity, TestService } from '../../../test/test.service';
+import { repositoryMockFactory, repositorySpies } from '../../../test/utils';
 
-describe('MoviesService', () => {
-    let service: MoviesService;
-    let repository: Repository<Movie>;
+describe('BaseService', () => {
+    let service: TestService;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
-                MoviesService,
+                TestService,
                 {
-                    provide: getRepositoryToken(Movie),
-                    useFactory: repositoryMockFactory(movieFixture)
+                    provide: getRepositoryToken(TestEntity),
+                    useFactory: repositoryMockFactory(entityFixture)
                 }
             ]
         }).compile();
 
-        service = module.get<MoviesService>(MoviesService);
-        repository = module.get<Repository<Movie>>(getRepositoryToken(Movie));
+        service = module.get<TestService>(TestService);
+        jest.clearAllMocks();
     });
 
-    describe('create', () => {
-        it('should call repository.save with the right parameters and return the result', async () => {
-            const res = await service.create(createMovieInputFixture);
-            expect(repository.save).toHaveBeenCalledWith({ ...createMovieInputFixture, type: 'movie' });
-            expect(res).toEqual(movieFixture);
+    xdescribe('create', () => {
+        it('should call repository.save with the right parameters', async () => {
+            const res = await service.create(entityFixture);
+            expect(repositorySpies.insert).toHaveBeenCalledWith(entityFixture);
+            expect(repositorySpies.findOne).toHaveBeenCalledWith({ where: entityFixture });
+            expect(res).toEqual(entityFixture);
         });
     });
 
     describe('findAll', () => {
         it('should call repository.find with the right parameters and return the result', async () => {
-            const res = await service.findAll();
-            expect(repository.find).toHaveBeenCalledWith();
-            expect(res).toEqual([movieFixture]);
+            const res = await service.findAll({ prop: 'Prop' }, ['playback']);
+            expect(repositorySpies.find).toHaveBeenCalledWith({ where: { prop: 'Prop' }, relations: ['playback'] });
+            expect(res).toEqual([entityFixture]);
         });
     });
 
     describe('findOne', () => {
         it('should call repository.findOne with the right parameters and return the result', async () => {
-            const res = await service.findOne(1);
-            expect(repository.findOne).toHaveBeenCalledWith(1);
-            expect(res).toEqual(movieFixture);
+            const res = await service.findOne(1, {});
+            expect(repositorySpies.findOne).toHaveBeenCalledWith({ where: { id: 1 }, relations: [] });
+            expect(res).toEqual(entityFixture);
         });
     });
 
     describe('update', () => {
         it('should call repository.update with the right parameters and return the result', async () => {
-            const res = await service.update(1, updateMovieInputFixture);
-            expect(repository.update).toHaveBeenCalledWith(1, updateMovieInputFixture);
-            expect(res).toEqual(movieFixture);
+            const res = await service.update(1, entityFixture);
+            expect(repositorySpies.update).toHaveBeenCalledWith(1, entityFixture);
+            expect(res).toEqual(entityFixture);
         });
     });
 
     describe('delete', () => {
         it('should call repository.delete with the right parameters', async () => {
             await service.remove(1);
-            expect(repository.delete).toHaveBeenCalledWith(1);
+            expect(repositorySpies.delete).toHaveBeenCalledWith(1);
         });
     });
 });

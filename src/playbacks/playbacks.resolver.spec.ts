@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { serviceMockFactory } from '../../test/utils';
+import { AuthService } from '../security/auth/auth.service';
 import { UpdatePlaybackInput } from './dto/update-playback.input';
 import playbackFixture from './fixtures/playback.fixture';
 import { PlaybacksResolver } from './playbacks.resolver';
@@ -11,7 +12,7 @@ describe('PlaybacksResolver', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [PlaybacksResolver, { provide: PlaybacksService, useFactory: serviceMockFactory(playbackFixture) }]
+            providers: [PlaybacksResolver, AuthService, { provide: PlaybacksService, useFactory: serviceMockFactory(playbackFixture) }]
         }).compile();
 
         resolver = module.get<PlaybacksResolver>(PlaybacksResolver);

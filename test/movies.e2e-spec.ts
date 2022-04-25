@@ -5,11 +5,15 @@ import { gql } from 'apollo-server-express';
 import { print } from 'graphql';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movie } from '../src/contents/movies/movie.entity';
-import { Connection, Repository } from 'typeorm';
+import { Connection, DataSource, Repository } from 'typeorm';
 import { ContentType } from '../src/contents/content.entity';
-import { createTestingAppModule } from './utils';
+import { clearDB, createTestingAppModule } from './utils';
+import { IMovie } from '../src/contents/movies/movie.interface';
+import { Playback } from '../src/playbacks/playback.entity';
+import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
+import { AuthService } from '../src/security/auth/auth.service';
 
-const testMovie: Movie = {
+const testMovie: IMovie = {
     id: 1,
     title: 'Interstellar',
     description: 'Interestellar description',
@@ -17,7 +21,7 @@ const testMovie: Movie = {
     type: ContentType.movie
 };
 
-const testMovie2: Movie = {
+const testMovie2: IMovie = {
     id: 2,
     title: 'Matrix',
     description: 'Matrix description',
@@ -29,16 +33,20 @@ describe('MovieResolver (e2e)', () => {
     let app: INestApplication;
     let module: TestingModule;
     let movieRepository: Repository<Movie>;
-    let db: Connection;
+    let authService: AuthService;
+    let playbackRepo: Repository<Playback>;
+    let db: DataSource;
 
     beforeAll(async () => {
         ({ app, module } = await createTestingAppModule());
-        movieRepository = module.get<Repository<Movie>>(getRepositoryToken(Movie));
-        db = app.get(Connection);
+        movieRepository = module.get(getRepositoryToken(Movie));
+        playbackRepo = module.get(getRepositoryToken(Playback));
+        authService = module.get(AuthService);
+        db = app.get(DataSource);
     });
 
     beforeEach(async () => {
-        await db.synchronize(true);
+        await clearDB(db);
     });
 
     afterAll(async () => {
@@ -50,13 +58,7 @@ describe('MovieResolver (e2e)', () => {
             const mutation = gql`
                 mutation {
                     createMovie(
-                        createMovieInput: {
-                            id: 1
-                            title: "Interstellar"
-                            description: "Interestellar description"
-                            duration: 223
-                            type: movie
-                        }
+                        createMovieInput: { id: 1, title: "Interstellar", description: "Interestellar description", duration: 223 }
                     ) {
                         id
                         title
@@ -72,24 +74,24 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(mutation)
                 });
-            expect(res.body.data.createMovie).toEqual(testMovie);
+            expect(res.body.data.createMovie).toEqual({
+                id: testMovie.id,
+                title: testMovie.title,
+                description: testMovie.description,
+                duration: testMovie.duration,
+                type: ContentType.movie
+            });
 
-            const dbMovie = await movieRepository.findOne(testMovie.id);
+            const dbMovie = await movieRepository.findOne({ where: { id: testMovie.id } });
             expect(dbMovie).toEqual(testMovie);
         });
 
         it('should update a movie when already in the database', async () => {
-            await movieRepository.save(testMovie);
+            const a = await movieRepository.save(testMovie);
             const mutation = gql`
                 mutation {
                     createMovie(
-                        createMovieInput: {
-                            id: 1
-                            title: "Interstellar 2"
-                            description: "Interestellar description 2"
-                            duration: 224
-                            type: movie
-                        }
+                        createMovieInput: { id: 1, title: "Interstellar 2", description: "Interestellar description 2", duration: 224 }
                     ) {
                         id
                         title
@@ -114,7 +116,7 @@ describe('MovieResolver (e2e)', () => {
                 description: 'Interestellar description 2'
             });
 
-            const dbMovie = await movieRepository.findOne(testMovie.id);
+            const dbMovie = await movieRepository.findOne({ where: { id: testMovie.id } });
             expect(dbMovie).toEqual({
                 id: 1,
                 duration: 224,
@@ -217,12 +219,46 @@ describe('MovieResolver (e2e)', () => {
 
             expect(res.body.errors[0]).toEqual(
                 expect.objectContaining({
-                    message: 'Entity Not Found',
+                    message: 'Movie Not Found',
                     extensions: {
                         code: 'ENTITY_NOT_FOUND'
                     }
                 })
             );
+        });
+
+        it('should return a specific movie with its playback', async () => {
+            await movieRepository.save(testMovie);
+            await playbackRepo.save({ ...playbackFixture, content: { id: 1 } });
+            const userToken = authService.generateToken({ userId: 12 });
+
+            const query = gql`
+                query {
+                    movie(id: 1) {
+                        id
+                        playback {
+                            id
+                            position
+                            finished
+                        }
+                    }
+                }
+            `;
+
+            const res = await request(app.getHttpServer())
+                .post('/graphql')
+                .set('Authorization', `Bearer ${userToken}`)
+                .send({
+                    query: print(query)
+                });
+            expect(res.body.data.movie).toEqual({
+                id: 1,
+                playback: {
+                    id: 1,
+                    position: playbackFixture.position,
+                    finished: false
+                }
+            });
         });
     });
 
@@ -300,7 +336,7 @@ describe('MovieResolver (e2e)', () => {
                 });
             expect(res.body.data.removeMovie).toEqual(true);
 
-            const movie = await movieRepository.findOne(1);
+            const movie = await movieRepository.findOne({ where: { id: 1 } });
             expect(movie).toBeUndefined;
         });
 

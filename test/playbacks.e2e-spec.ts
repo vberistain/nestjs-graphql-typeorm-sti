@@ -6,11 +6,11 @@ import { print } from 'graphql';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Playback } from '../src/playbacks/playback.entity';
 import { Connection, Repository } from 'typeorm';
-import { createTestingAppModule } from './utils';
-import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
+import { clearDB, createTestingAppModule } from './utils';
 import { Movie } from '../src/contents/movies/movie.entity';
 import { CreatePlaybackInput } from '../src/playbacks/dto/create-playback.input';
-import { Livestream } from '../src/contents/livestreams/livestream.entity';
+import movieFixture from '../src/contents/movies/fixtures/movie.fixture';
+import { IMovie } from '../src/contents/movies/movie.interface';
 import { ContentType } from '../src/contents/content.entity';
 
 const testPlayback: CreatePlaybackInput = {
@@ -23,32 +23,30 @@ const testPlayback: CreatePlaybackInput = {
         id: 1
     }
 };
-const testMovie: Movie = { ...playbackFixture.content, duration: 123 };
+const testMovie: IMovie = movieFixture;
 
 const testPlayback2: CreatePlaybackInput = {
     ...testPlayback,
     content: { id: 2 }
 };
-const testMovie2: Movie = { ...playbackFixture.content, id: 2, title: 'Movie2', duration: 123 };
+const testMovie2: IMovie = { id: 2, title: 'Movie2', duration: 123, type: ContentType.movie };
 
 describe('PlaybackResolver (e2e)', () => {
     let app: INestApplication;
     let module: TestingModule;
     let playbackRepository: Repository<Playback>;
     let movieRepository: Repository<Movie>;
-    let livestreamRepository: Repository<Livestream>;
     let db: Connection;
 
     beforeAll(async () => {
         ({ app, module } = await createTestingAppModule());
         playbackRepository = module.get<Repository<Playback>>(getRepositoryToken(Playback));
         movieRepository = module.get<Repository<Movie>>(getRepositoryToken(Movie));
-        livestreamRepository = module.get<Repository<Livestream>>(getRepositoryToken(Livestream));
         db = app.get(Connection);
     });
 
     beforeEach(async () => {
-        await db.synchronize(true);
+        await clearDB(db);
     });
 
     afterAll(async () => {
@@ -91,7 +89,7 @@ describe('PlaybackResolver (e2e)', () => {
                 content: { id: 1 }
             });
 
-            const dbPlayback = await playbackRepository.findOne(1);
+            const dbPlayback = await playbackRepository.findOne({ where: { id: 1 } });
             expect(dbPlayback).toEqual(
                 expect.objectContaining({
                     id: 1,
@@ -111,7 +109,14 @@ describe('PlaybackResolver (e2e)', () => {
             const mutation = gql`
                 mutation {
                     createPlayback(
-                        createPlaybackInput: { position: 123, duration: 223, finished: false, started: true, userId: 1, content: { id: 1 } }
+                        createPlaybackInput: {
+                            position: 123
+                            duration: 223
+                            finished: false
+                            started: true
+                            userId: 12
+                            content: { id: 1 }
+                        }
                     ) {
                         id
                         duration
@@ -173,8 +178,8 @@ describe('PlaybackResolver (e2e)', () => {
                     }
                 })
             );
-            const dbPlayback = await playbackRepository.findOne(1);
-            expect(dbPlayback).toBeUndefined();
+            const dbPlayback = await playbackRepository.findOne({ where: { id: 1 } });
+            expect(dbPlayback).toBeNull();
         });
     });
 
@@ -303,37 +308,6 @@ describe('PlaybackResolver (e2e)', () => {
                 })
             );
         });
-
-        it('should return a specific playback for a livestream', async () => {
-            await livestreamRepository.save({ ...testMovie, type: ContentType.livestream });
-            await playbackRepository.save(testPlayback);
-            const query = gql`
-                query {
-                    playback(id: 1) {
-                        id
-                        duration
-                        content {
-                            id
-                            type
-                        }
-                    }
-                }
-            `;
-
-            const res = await request(app.getHttpServer())
-                .post('/graphql')
-                .send({
-                    query: print(query)
-                });
-            expect(res.body.data.playback).toEqual({
-                id: 1,
-                duration: testPlayback.duration,
-                content: {
-                    id: testMovie.id,
-                    type: ContentType.livestream
-                }
-            });
-        });
     });
 
     describe('updatePlayback', () => {
@@ -435,7 +409,7 @@ describe('PlaybackResolver (e2e)', () => {
                 });
             expect(res.body.data.removePlayback).toEqual(true);
 
-            const playback = await playbackRepository.findOne(1);
+            const playback = await playbackRepository.findOne({ where: { id: 1 } });
             expect(playback).toBeUndefined;
         });
 
@@ -479,7 +453,7 @@ describe('PlaybackResolver (e2e)', () => {
 
             expect(res.body.data.removePlayback).toEqual(true);
 
-            expect(await movieRepository.findOne(1)).toBeDefined();
+            expect(await movieRepository.findOne({ where: { id: 1 } })).toBeDefined();
         });
     });
 });

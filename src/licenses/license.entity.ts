@@ -1,9 +1,9 @@
 import { ObjectType, Field, InputType, Int } from '@nestjs/graphql';
 import { Content } from '../contents/content.entity';
-import { Column, Entity, Index, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @InputType('LicenseInput', { isAbstract: true })
-@ObjectType({ isAbstract: true })
+@ObjectType()
 @Entity()
 export class License {
     @Field(() => Int)
@@ -20,11 +20,11 @@ export class License {
     expireDate?: Date;
 
     @Field(() => Date, { nullable: true })
-    @Column({ nullable: true })
+    @Column({ nullable: true, default: () => 'NOW()' })
     startDate?: Date;
 
     @Field(() => Content)
-    @OneToOne(() => Content, (content) => content.license)
+    @ManyToOne(() => Content, (content) => content.licenses)
     @JoinColumn()
     content: Content;
 }
