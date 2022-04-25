@@ -18,7 +18,7 @@
         "test:watch": "jest --config jest-unit.js --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-        "test:e2e": "jest  --config ./test/jest-e2e.js",
+        "test:e2e": "jest  --config ./test/jest-e2e.js --runInBand",
         "test:e2e:watch": "jest --config ./test/jest-e2e.js --watch --runInBand",
         "typeorm": "node -r ts-node/register -r tsconfig-paths/register  ./node_modules/typeorm/cli.js",
         "db:uml": "NODE_ENV=development ts-node -r tsconfig-paths/register --project=tsconfig.js ./node_modules/.bin/typeorm-uml ormconfig.json -d uml.png -f png",
