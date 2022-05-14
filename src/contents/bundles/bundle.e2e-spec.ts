@@ -12,6 +12,8 @@ import { clearDB, createTestingAppModule } from '@test/utils';
 import { IMovie } from '../movies/movie.interface';
 import { Movie } from '../movies/movie.entity';
 import { ContentType } from '../content.interface';
+import { IPlaylist } from '../playlists/playlist.interface';
+import { Playlist } from '../playlists/playlist.entity';
 
 const testMovie: IMovie = {
     id: 1,
@@ -27,6 +29,14 @@ const testMovie2: IMovie = {
     description: 'Interstellar description',
     type: ContentType.movie,
     duration: 321
+};
+
+const testPlaylist: IPlaylist = {
+    id: 5,
+    title: 'Playlist',
+    description: 'Playlist',
+    type: ContentType.playlist,
+    contents: [testMovie]
 };
 
 const testBundle: IBundle = {
@@ -50,6 +60,7 @@ describe('BundleResolver (e2e)', () => {
     let module: TestingModule;
     let movieRepository: Repository<Movie>;
     let bundleRepository: Repository<Bundle>;
+    let playlistRepository: Repository<Playlist>;
     let authService: AuthService;
     let db: DataSource;
 
@@ -57,6 +68,7 @@ describe('BundleResolver (e2e)', () => {
         ({ app, module } = await createTestingAppModule());
         bundleRepository = module.get(getRepositoryToken(Bundle));
         movieRepository = module.get(getRepositoryToken(Movie));
+        playlistRepository = module.get(getRepositoryToken(Playlist));
         authService = module.get(AuthService);
         db = app.get(DataSource);
     });
@@ -96,7 +108,6 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(mutation)
                 });
-            console.log(res.body);
             expect(res.body.data.createBundle).toEqual({
                 id: testBundle.id,
                 title: testBundle.title,
@@ -185,7 +196,6 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            console.log(res.body);
             expect(res.body.data.bundles).toEqual([testBundle, testBundle2]);
         });
 
@@ -242,6 +252,50 @@ describe('BundleResolver (e2e)', () => {
                     query: print(query)
                 });
             expect(res.body.data.bundle).toEqual(testBundle);
+        });
+
+        it('should return a specific bundle with a playlist in it', async () => {
+            await movieRepository.save(testMovie);
+            await movieRepository.save(testMovie2);
+            await playlistRepository.save(testPlaylist);
+            const bundleWithPlaylist = { ...testBundle, contents: [testPlaylist] };
+            await bundleRepository.save(bundleWithPlaylist);
+
+            const query = gql`
+                query {
+                    bundle(id: 3) {
+                        id
+                        title
+                        description
+                        type
+                        contents {
+                            ... on Playlist {
+                                id
+                                title
+                                type
+                                description
+                                contents {
+                                    ... on Movie {
+                                        id
+                                        title
+                                        type
+                                        duration
+                                        description
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            `;
+
+            const res = await request(app.getHttpServer())
+                .post('/graphql')
+                .send({
+                    query: print(query)
+                });
+            console.log(res.body.data.bundle);
+            expect(res.body.data.bundle).toEqual(bundleWithPlaylist);
         });
 
         it('should return a not found error', async () => {

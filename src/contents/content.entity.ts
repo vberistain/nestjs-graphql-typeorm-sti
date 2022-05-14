@@ -23,7 +23,7 @@ export abstract class Content implements IContent {
         type: 'enum',
         enum: ContentType
     })
-    readonly type: ContentType;
+    type: ContentType;
 
     @Field({ description: 'Content description' })
     @Column({ nullable: true })

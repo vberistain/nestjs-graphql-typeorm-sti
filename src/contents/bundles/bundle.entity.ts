@@ -8,7 +8,8 @@ import { ContentContainedUnion } from '../content.type';
 @ChildEntity('bundle')
 export class Bundle extends Content {
     @Field(() => [ContentContainedUnion], { nullable: true })
-    @ManyToMany('Movie', 'inContents')
+    @ManyToMany('Content', 'inContents')
+    // @ManyToMany('Movie', 'inContents')
     @JoinTable({
         name: 'content_contents',
         joinColumns: [

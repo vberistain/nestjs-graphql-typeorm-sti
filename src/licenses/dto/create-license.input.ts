@@ -4,7 +4,7 @@ import { Content } from '../../contents/content.entity';
 import { License } from '../license.entity';
 
 @InputType()
-export class CreateLicenseInput extends OmitType(License, ['id', 'content']) {
+export class CreateLicenseInput extends OmitType(License, ['id', 'content'], InputType) {
     @Field(() => IdOnlyEntity)
     content: Pick<Content, 'id'>;
 }

@@ -2,7 +2,7 @@ import { UpdateBundleInput } from '../dto/update-bundle.input';
 
 const updateBundleInputFixture: UpdateBundleInput = {
     id: 1,
-    title: 'Title',
+    // title: 'Title',
     description: 'Description'
 };
 
