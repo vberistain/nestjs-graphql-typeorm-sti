@@ -1,4 +1,4 @@
-import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import { InputType, PartialType } from '@nestjs/graphql';
 import { CreateMovieInput } from './create-movie.input';
 
 @InputType()

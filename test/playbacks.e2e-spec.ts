@@ -11,7 +11,7 @@ import { Movie } from '../src/contents/movies/movie.entity';
 import { CreatePlaybackInput } from '../src/playbacks/dto/create-playback.input';
 import movieFixture from '../src/contents/movies/fixtures/movie.fixture';
 import { IMovie } from '../src/contents/movies/movie.interface';
-import { ContentType } from '../src/contents/content.entity';
+import { ContentType } from '../src/contents/content.interface';
 
 const testPlayback: CreatePlaybackInput = {
     started: true,

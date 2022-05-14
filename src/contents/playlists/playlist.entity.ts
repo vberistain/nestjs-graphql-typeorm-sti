@@ -1,15 +1,15 @@
 import { ObjectType, InputType, Field } from '@nestjs/graphql';
 import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
-import { Content, ContentType } from '../content.entity';
-import { IPlaylist } from './playlist.interface';
+import { Bundle } from '../bundles/bundle.entity';
+import { Content } from '../content.entity';
+import { ContentContainedUnion } from '../content.type';
 
-//@TODO: restrict playlist contents to be only movies
+@ObjectType('Playlist')
 @InputType('Playlistinput', { isAbstract: true })
-@ObjectType()
-@ChildEntity(ContentType.playlist)
-export class Playlist extends Content implements IPlaylist {
-    @Field(() => [Content])
-    @ManyToMany(() => Content, { nullable: true })
+@ChildEntity('playlist')
+export class Playlist extends Content {
+    @Field(() => [ContentContainedUnion], { nullable: true })
+    @ManyToMany('Movie', 'inContents')
     @JoinTable({
         name: 'content_contents',
         joinColumns: [
@@ -25,5 +25,11 @@ export class Playlist extends Content implements IPlaylist {
             }
         ]
     })
-    contents: Content[];
+    contents: typeof ContentContainedUnion[];
+
+    @Field(() => [Bundle])
+    @ManyToMany(() => Bundle, (bundle) => bundle.contents, {
+        nullable: true
+    })
+    inContents: Bundle[];
 }

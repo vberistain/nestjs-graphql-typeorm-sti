@@ -1,4 +1,4 @@
-import { ContentType } from '../../content.entity';
+import { ContentType } from '../../content.interface';
 import { IBundle } from '../bundle.interface';
 
 const bundleFixture: IBundle = {

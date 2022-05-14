@@ -52,6 +52,9 @@ export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMo
         if (userId && relations.includes('licenses')) {
             query.leftJoinAndSelect('movie.licenses', 'licenses', 'licenses.userId = :userId', { userId });
         }
+        if (relations.includes('inContents')) {
+            query.leftJoinAndSelect('movie.inContents', 'inContents');
+        }
         this.addFiltersToQuery(filters, query);
         return query.getMany();
     }

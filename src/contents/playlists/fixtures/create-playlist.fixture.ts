@@ -1,4 +1,3 @@
-import { ContentType } from '../../content.entity';
 import { CreatePlaylistInput } from '../dto/create-playlist.input';
 
 const createPlaylistInputFixture: CreatePlaylistInput = {

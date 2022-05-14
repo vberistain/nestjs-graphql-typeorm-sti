@@ -6,12 +6,12 @@ import { print } from 'graphql';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Movie } from '../src/contents/movies/movie.entity';
 import { Connection, DataSource, Repository } from 'typeorm';
-import { ContentType } from '../src/contents/content.entity';
 import { clearDB, createTestingAppModule } from './utils';
 import { IMovie } from '../src/contents/movies/movie.interface';
 import { Playback } from '../src/playbacks/playback.entity';
 import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
 import { AuthService } from '../src/security/auth/auth.service';
+import { ContentType } from '../src/contents/content.interface';
 
 const testMovie: IMovie = {
     id: 1,

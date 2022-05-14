@@ -1,4 +1,4 @@
-import { ContentType } from '../../content.entity';
+import { ContentType } from '../../content.interface';
 import { IMovie } from '../movie.interface';
 
 const movieFixture: IMovie = {

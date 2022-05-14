@@ -1,26 +1,10 @@
 import { GqlUserGuard } from './../security/auth/auth.guard';
-import { Args, Context, createUnionType, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { Content, ContentType } from './content.entity';
+import { Args, Context, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { Content } from './content.entity';
 import { Query } from '@nestjs/graphql';
 import { Inject } from '@nestjs/common';
 import { ContentsService } from './contents.service';
-import { Movie } from './movies/movie.entity';
-import { Playlist } from './playlists/playlist.entity';
-
-export const ContentUnion = createUnionType({
-    name: 'ContentUnion', // the name of the GraphQL union
-    types: () => [Movie, Playlist], // function that returns tuple of object types classes,
-    resolveType(content: any) {
-        if (content.type === ContentType.movie) {
-            return Movie;
-        }
-
-        if (content.type === ContentType.playlist) {
-            return Playlist;
-        }
-        return null;
-    }
-});
+import { ContentUnion } from './content.type';
 
 @Resolver(() => Content)
 export class ContentsResolver {

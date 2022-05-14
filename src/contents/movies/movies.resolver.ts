@@ -25,7 +25,7 @@ export class MoviesResolver extends BaseResolver(Movie, CreateMovieInput, Update
     @Query(() => [Movie], { name: `movies` })
     @UseGuards(GqlUserGuard)
     async findAll(@User() user?: UserPayload): Promise<Movie[]> {
-        return this.moviesService.findAll({}, ['playbacks', 'licenses', 'playlists'], user?.userId);
+        return this.moviesService.findAll({}, ['playbacks', 'licenses', 'inContents'], user?.userId);
     }
 
     @Mutation(() => Movie, { name: `createMovie` })

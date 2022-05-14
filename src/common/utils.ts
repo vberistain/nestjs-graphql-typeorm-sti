@@ -10,7 +10,7 @@ export function mapFromArray<T>(array: T[], keyStrategy: (v: T) => string | numb
     return map;
 }
 
-@InputType()
+@InputType('ContentIdOnly')
 export class IdOnlyEntity {
     @Field(() => Int)
     id: number;

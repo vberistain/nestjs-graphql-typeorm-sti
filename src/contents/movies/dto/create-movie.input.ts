@@ -1,5 +1,16 @@
-import { InputType, OmitType } from '@nestjs/graphql';
-import { Movie } from '../movie.entity';
+import { Field, InputType, Int, OmitType } from '@nestjs/graphql';
 
-@InputType()
-export class CreateMovieInput extends OmitType(Movie, ['type']) {}
+@InputType('CreateMovieInput')
+export class CreateMovieInput {
+    @Field(() => Int)
+    duration: number;
+
+    @Field(() => Int)
+    id!: number;
+
+    @Field({ description: 'Content title' })
+    title: string;
+
+    @Field({ description: 'Content title' })
+    description: string;
+}

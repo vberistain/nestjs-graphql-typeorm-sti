@@ -1,12 +1,7 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
 import { License } from '../licenses/license.entity';
 import { Column, Entity, OneToMany, PrimaryColumn, TableInheritance } from 'typeorm';
-
-export enum ContentType {
-    movie = 'movie',
-    playlist = 'playlist',
-    bundle = 'bundle'
-}
+import { ContentType, IContent } from './content.interface';
 
 @ObjectType({ isAbstract: true })
 @InputType('ContentInput', { isAbstract: true })
@@ -14,7 +9,7 @@ export enum ContentType {
 @TableInheritance({
     column: 'type'
 })
-export abstract class Content {
+export abstract class Content implements IContent {
     @Field(() => Int)
     @PrimaryColumn()
     id!: number;
@@ -26,8 +21,7 @@ export abstract class Content {
     @Field(() => ContentType, { description: 'Content type' })
     @Column({
         type: 'enum',
-        enum: ContentType,
-        default: ContentType.movie
+        enum: ContentType
     })
     readonly type: ContentType;
 

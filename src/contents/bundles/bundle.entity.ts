@@ -1,15 +1,14 @@
-import { ObjectType, Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
-import { Content, ContentType } from '../content.entity';
-import { ContentUnion } from '../contents.resolver';
-import { IBundle } from './bundle.interface';
+import { Content } from '../content.entity';
+import { ContentContainedUnion } from '../content.type';
 
-@InputType('Bundleinput', { isAbstract: true })
-@ObjectType()
-@ChildEntity(ContentType.bundle)
-export class Bundle extends Content implements IBundle {
-    @Field(() => [ContentUnion])
-    @ManyToMany(() => Content, { nullable: true })
+@ObjectType('Bundle', { isAbstract: true })
+@InputType('BundleInput', { isAbstract: true })
+@ChildEntity('bundle')
+export class Bundle extends Content {
+    @Field(() => [ContentContainedUnion], { nullable: true })
+    @ManyToMany('Movie', 'inContents')
     @JoinTable({
         name: 'content_contents',
         joinColumns: [
@@ -25,5 +24,5 @@ export class Bundle extends Content implements IBundle {
             }
         ]
     })
-    contents: typeof ContentUnion[];
+    contents?: typeof ContentContainedUnion[];
 }

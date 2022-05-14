@@ -1,4 +1,3 @@
-import { ContentType } from '../../content.entity';
 import { CreateMovieInput } from '../dto/create-movie.input';
 
 const createMovieInputFixture: CreateMovieInput = {

@@ -1,33 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { createQueryBuilder, DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { ContentUnion } from './contents.resolver';
+import { createQueryBuilder, DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError } from '@customErrors';
 import { Playlist } from './playlists/playlist.entity';
 import { Movie } from './movies/movie.entity';
 import { Content } from './content.entity';
+import { ContentUnion } from './content.type';
 
 @Injectable()
 export class ContentsService {
-    @InjectDataSource()
-    private readonly dataSource: DataSource;
+    @InjectRepository(Content)
+    private readonly repository: Repository<Content>;
 
     async findOne(id: number): Promise<typeof ContentUnion> {
-        const content = <Movie | Playlist>(
-            await createQueryBuilder(Content, 'content')
-                .where('content.id = :id', { id })
-                .leftJoinAndSelect('content_contents', 'contents')
-                .getRawOne()
-        );
-        if (!content) {
-            throw new EntityNotFoundError();
-        }
-
+        const content = await this.repository.findOne({
+            where: { id },
+            relations: ['contents', 'playbacks', 'inContents', 'contents.inContents']
+        });
         return content;
     }
 
-    async findAll(): Promise<[typeof ContentUnion]> {
-        const contents = await this.dataSource.getRepository(Content).find({ relations: ['contents', 'playbacks'] });
-        return contents as any;
+    async findAll(): Promise<Array<typeof ContentUnion>> {
+        const contents = await this.repository.find({
+            relations: ['contents', 'playbacks', 'inContents', 'contents.inContents']
+        });
+        return contents;
     }
 }

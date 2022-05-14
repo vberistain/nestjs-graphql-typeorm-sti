@@ -49,7 +49,6 @@ import { ContentSubscriber } from './contents/content.subscriber';
         }),
         ContentsModule,
         LicensesModule,
-        // BundlesModule,
         PlaybacksModule,
         SecurityModule,
         AuthModule

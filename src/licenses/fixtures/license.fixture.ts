@@ -1,4 +1,4 @@
-import { ContentType } from '../../contents/content.entity';
+import { ContentType } from '../../contents/content.interface';
 import { ILicense } from '../license.interface';
 
 const licenseFixture: ILicense = {

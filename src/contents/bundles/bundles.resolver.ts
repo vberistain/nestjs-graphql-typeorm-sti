@@ -13,12 +13,12 @@ export class BundlesResolver extends BaseResolver(Bundle, CreateBundleInput, Upd
 
     @Query(() => Bundle, { name: 'bundle' })
     async findOne(@Args('id', { type: () => Int }) id: number): Promise<Bundle> {
-        return this.bundlesService.findOne(id, {}, ['contents', 'contents.contents']);
+        return this.bundlesService.findOne(id, {}, ['contents']);
     }
 
     @Query(() => [Bundle], { name: 'bundles' })
     async findAll(): Promise<Bundle[]> {
-        return this.bundlesService.findAll({}, ['contents', 'contents.contents']);
+        return this.bundlesService.findAll({}, ['contents']);
     }
 
     @Mutation(() => Bundle, { name: 'createBundle' })

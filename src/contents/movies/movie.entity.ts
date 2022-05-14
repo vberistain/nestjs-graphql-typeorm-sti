@@ -1,11 +1,14 @@
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
-import { ChildEntity, Column, OneToMany } from 'typeorm';
+import { ChildEntity, Column, ManyToMany, OneToMany } from 'typeorm';
 import { Playback } from '../../playbacks/playback.entity';
-import { Content, ContentType } from '../content.entity';
+import { Bundle } from '../bundles/bundle.entity';
+import { Content } from '../content.entity';
+import { ContentContainerUnion } from '../content.type';
+import { Playlist } from '../playlists/playlist.entity';
 
 @InputType('MovieInput', { isAbstract: true })
 @ObjectType('Movie')
-@ChildEntity(ContentType.movie)
+@ChildEntity('movie')
 export class Movie extends Content {
     @Field(() => Int)
     @Column()
@@ -16,4 +19,10 @@ export class Movie extends Content {
 
     @Field(() => Playback, { nullable: true })
     playback?: Playback;
+
+    @Field(() => [ContentContainerUnion])
+    @ManyToMany(() => Bundle || Playlist, (content) => content.contents, {
+        nullable: true
+    })
+    inContents: typeof ContentContainerUnion[];
 }

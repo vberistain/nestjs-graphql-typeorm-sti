@@ -6,12 +6,12 @@ import { print } from 'graphql';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { IBundle } from './bundle.interface';
-import { ContentType } from '../content.entity';
 import { AuthService } from '@security/auth/auth.service';
 import { Bundle } from './bundle.entity';
 import { clearDB, createTestingAppModule } from '@test/utils';
 import { IMovie } from '../movies/movie.interface';
 import { Movie } from '../movies/movie.entity';
+import { ContentType } from '../content.interface';
 
 const testMovie: IMovie = {
     id: 1,
@@ -96,6 +96,7 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(mutation)
                 });
+            console.log(res.body);
             expect(res.body.data.createBundle).toEqual({
                 id: testBundle.id,
                 title: testBundle.title,
@@ -184,6 +185,7 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
+            console.log(res.body);
             expect(res.body.data.bundles).toEqual([testBundle, testBundle2]);
         });
 

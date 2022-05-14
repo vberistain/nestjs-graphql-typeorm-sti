@@ -1,4 +1,4 @@
-import { ContentType } from '../../content.entity';
+import { ContentType } from '../../content.interface';
 import { IPlaylist } from '../playlist.interface';
 
 const playlistFixture: IPlaylist = {

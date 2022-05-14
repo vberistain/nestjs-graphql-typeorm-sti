@@ -1,4 +1,3 @@
-import { ContentType } from '../../content.entity';
 import { UpdatePlaylistInput } from '../dto/update-playlist.input';
 
 const updatePlaylistInputFixture: UpdatePlaylistInput = {
