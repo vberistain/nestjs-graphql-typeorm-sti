@@ -294,7 +294,6 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            console.log(res.body.data.bundle);
             expect(res.body.data.bundle).toEqual(bundleWithPlaylist);
         });
 

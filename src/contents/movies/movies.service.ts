@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+import { Repository, SelectQueryBuilder, FindOptionsWhere, FindOptionsRelations } from 'typeorm';
 import { Movie } from './movie.entity';
 import { EntityNotFoundError } from '@customErrors';
 import { CreateMovieInput } from './dto/create-movie.input';
@@ -34,6 +34,9 @@ export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMo
         }
         if (userId && relations.includes('licenses')) {
             query.leftJoinAndSelect('movie.licenses', 'licenses', 'licenses.userId = :userId', { userId });
+        }
+        if (relations.includes('inContents')) {
+            query.leftJoinAndSelect('movie.inContents', 'inContents');
         }
         query.where('movie.id = :id', { id });
         this.addFiltersToQuery(filters, query);

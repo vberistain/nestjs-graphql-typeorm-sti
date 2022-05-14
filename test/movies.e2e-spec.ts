@@ -12,6 +12,8 @@ import { Playback } from '../src/playbacks/playback.entity';
 import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
 import { AuthService } from '../src/security/auth/auth.service';
 import { ContentType } from '../src/contents/content.interface';
+import { IPlaylist } from '../src/contents/playlists/playlist.interface';
+import { Playlist } from '../src/contents/playlists/playlist.entity';
 
 const testMovie: IMovie = {
     id: 1,
@@ -29,18 +31,28 @@ const testMovie2: IMovie = {
     type: ContentType.movie
 };
 
+const testPlaylist: IPlaylist = {
+    id: 3,
+    title: 'Playlist',
+    description: 'Playlist',
+    type: ContentType.playlist,
+    contents: [testMovie, testMovie2]
+};
+
 describe('MovieResolver (e2e)', () => {
     let app: INestApplication;
     let module: TestingModule;
     let movieRepository: Repository<Movie>;
     let authService: AuthService;
     let playbackRepo: Repository<Playback>;
+    let playlistRepo: Repository<Playlist>;
     let db: DataSource;
 
     beforeAll(async () => {
         ({ app, module } = await createTestingAppModule());
         movieRepository = module.get(getRepositoryToken(Movie));
         playbackRepo = module.get(getRepositoryToken(Playback));
+        playlistRepo = module.get(getRepositoryToken(Playlist));
         authService = module.get(AuthService);
         db = app.get(DataSource);
     });
@@ -196,6 +208,49 @@ describe('MovieResolver (e2e)', () => {
                     query: print(query)
                 });
             expect(res.body.data.movie).toEqual(testMovie);
+        });
+
+        it('should return a specific movie and the playlist which contains it', async () => {
+            await movieRepository.save(testMovie);
+            await movieRepository.save(testMovie2);
+            await playlistRepo.save(testPlaylist);
+
+            const query = gql`
+                query {
+                    movie(id: 1) {
+                        id
+                        title
+                        description
+                        duration
+                        type
+                        inContents {
+                            ... on Playlist {
+                                id
+                                title
+                                type
+                                description
+                            }
+                        }
+                    }
+                }
+            `;
+
+            const res = await request(app.getHttpServer())
+                .post('/graphql')
+                .send({
+                    query: print(query)
+                });
+            expect(res.body.data.movie).toEqual({
+                ...testMovie,
+                inContents: [
+                    {
+                        id: testPlaylist.id,
+                        title: testPlaylist.title,
+                        type: testPlaylist.type,
+                        description: testPlaylist.description
+                    }
+                ]
+            });
         });
 
         it('should return a not found error', async () => {

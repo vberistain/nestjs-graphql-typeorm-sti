@@ -6,7 +6,6 @@ import { Content } from '../content.entity';
 import { ContentContainerUnion } from '../content.type';
 import { Playlist } from '../playlists/playlist.entity';
 
-@InputType('MovieInput', { isAbstract: true })
 @ObjectType('Movie')
 @ChildEntity('movie')
 export class Movie extends Content {

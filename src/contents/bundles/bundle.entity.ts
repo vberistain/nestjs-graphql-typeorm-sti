@@ -3,13 +3,11 @@ import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
 import { Content } from '../content.entity';
 import { ContentContainedUnion } from '../content.type';
 
-@ObjectType('Bundle', { isAbstract: true })
-@InputType('BundleInput', { isAbstract: true })
+@ObjectType('Bundle')
 @ChildEntity('bundle')
 export class Bundle extends Content {
     @Field(() => [ContentContainedUnion], { nullable: true })
     @ManyToMany('Content', 'inContents')
-    // @ManyToMany('Movie', 'inContents')
     @JoinTable({
         name: 'content_contents',
         joinColumns: [
