@@ -11,9 +11,9 @@ import { Bundle } from './bundle.entity';
 import { clearDB, createTestingAppModule } from '@test/utils';
 import { IMovie } from '../movies/movie.interface';
 import { Movie } from '../movies/movie.entity';
-import { ContentType } from '../content.interface';
 import { IPlaylist } from '../playlists/playlist.interface';
 import { Playlist } from '../playlists/playlist.entity';
+import { ContentType } from '../content.interface';
 
 const testMovie: IMovie = {
     id: 1,

@@ -11,9 +11,9 @@ import { IMovie } from '../src/contents/movies/movie.interface';
 import { Playback } from '../src/playbacks/playback.entity';
 import playbackFixture from '../src/playbacks/fixtures/playback.fixture';
 import { AuthService } from '../src/security/auth/auth.service';
-import { ContentType } from '../src/contents/content.interface';
 import { IPlaylist } from '../src/contents/playlists/playlist.interface';
 import { Playlist } from '../src/contents/playlists/playlist.entity';
+import { ContentType } from '../src/contents/content.interface';
 
 const testMovie: IMovie = {
     id: 1,
@@ -311,7 +311,7 @@ describe('MovieResolver (e2e)', () => {
                 playback: {
                     id: 1,
                     position: playbackFixture.position,
-                    finished: false
+                    finished: playbackFixture.finished
                 }
             });
         });

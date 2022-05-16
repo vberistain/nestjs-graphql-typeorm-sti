@@ -3,12 +3,14 @@ import { ChildEntity, Column, ManyToMany, OneToMany } from 'typeorm';
 import { Playback } from '../../playbacks/playback.entity';
 import { Bundle } from '../bundles/bundle.entity';
 import { Content } from '../content.entity';
-import { ContentContainerUnion } from '../content.type';
+import { ContentType } from '../content.interface';
+import { ContentContainerUnion } from '../content.types';
 import { Playlist } from '../playlists/playlist.entity';
+import { IMovie } from './movie.interface';
 
 @ObjectType('Movie')
-@ChildEntity('movie')
-export class Movie extends Content {
+@ChildEntity(ContentType.movie)
+export class Movie extends Content implements IMovie {
     @Field(() => Int)
     @Column()
     duration: number;

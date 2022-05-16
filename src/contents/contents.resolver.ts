@@ -1,10 +1,13 @@
-import { GqlUserGuard } from './../security/auth/auth.guard';
-import { Args, Context, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { GqlUserGuard, User } from './../security/auth/auth.guard';
+import { Args, Context, Info, Int, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Content } from './content.entity';
 import { Query } from '@nestjs/graphql';
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { ContentsService } from './contents.service';
-import { ContentUnion } from './content.type';
+import { ContentUnion } from './content.types';
+import { UserPayload } from '../security/auth/user-payload';
+import { GraphQLResolveInfo } from 'graphql';
+import { getRelations } from '../common/graphql-utils';
 
 @Resolver(() => Content)
 export class ContentsResolver {
@@ -12,14 +15,14 @@ export class ContentsResolver {
     private readonly contentsService: ContentsService;
 
     @Query(() => ContentUnion)
-    async content(@Args('id', { type: () => Int }) id: number): Promise<typeof ContentUnion> {
-        return this.contentsService.findOne(id);
+    async content(@Args('id', { type: () => Int }) id: number, @Info() info: GraphQLResolveInfo): Promise<typeof ContentUnion> {
+        return this.contentsService.findOne(id, {}, getRelations(info));
     }
 
     @Query(() => [ContentUnion])
-    // @UseGuards(GqlUserGuard)
-    async contents(): Promise<typeof ContentUnion[]> {
-        return this.contentsService.findAll();
+    @UseGuards(GqlUserGuard)
+    async contents(@Info() info: GraphQLResolveInfo, @User() user?: UserPayload): Promise<typeof ContentUnion[]> {
+        return this.contentsService.findAll({}, getRelations(info));
     }
 
     // @ResolveField(() => Playback, { nullable: true })

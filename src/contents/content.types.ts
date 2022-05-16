@@ -2,12 +2,7 @@ import { createUnionType } from '@nestjs/graphql';
 import { Movie } from './movies/movie.entity';
 import { Playlist } from './playlists/playlist.entity';
 import { Bundle } from './bundles/bundle.entity';
-
-export enum ContentType {
-    movie = 'movie',
-    playlist = 'playlist',
-    bundle = 'bundle'
-}
+import { ContentType } from './content.interface';
 
 export const ContentUnion = createUnionType({
     name: 'ContentUnion',

@@ -7,9 +7,6 @@ import { CreateMovieInput } from './dto/create-movie.input';
 import { UpdateMovieInput } from './dto/update-movie.input';
 import { BaseService } from '@common/base/base.service';
 
-interface DBFilters {
-    [key: string]: any;
-}
 @Injectable()
 export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMovieInput> {
     constructor(
@@ -19,7 +16,7 @@ export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMo
         super(moviesRepository);
     }
 
-    private addFiltersToQuery(filters: DBFilters, query: SelectQueryBuilder<Movie>) {
+    private addFiltersToQuery(filters: FindOptionsWhere<Movie> = {}, query: SelectQueryBuilder<Movie>) {
         if (Object.keys(filters).length) {
             for (let key in filters) {
                 query.andWhere(`${key} = :var`, { var: filters[key] });
@@ -27,9 +24,9 @@ export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMo
         }
     }
 
-    async findOne(id: number, filters: DBFilters = {}, relations: string[] = [], userId?: number): Promise<Movie> {
+    async findOne(id: number, filters: FindOptionsWhere<Movie> = {}, relations: string[] = [], userId?: number): Promise<Movie> {
         const query = this.moviesRepository.createQueryBuilder('movie');
-        if (userId && relations.includes('playbacks')) {
+        if (userId && relations.includes('playback')) {
             query.leftJoinAndSelect('movie.playbacks', 'playbacks', 'playbacks.userId = :userId', { userId });
         }
         if (userId && relations.includes('licenses')) {
@@ -47,9 +44,9 @@ export class MoviesService extends BaseService<Movie, CreateMovieInput, UpdateMo
         return movie;
     }
 
-    async findAll(filters: DBFilters = {}, relations: string[] = [], userId?: number): Promise<Movie[]> {
+    async findAll(filters: FindOptionsWhere<Movie> = {}, relations: string[] = [], userId?: number): Promise<Movie[]> {
         const query = this.moviesRepository.createQueryBuilder('movie');
-        if (userId && relations.includes('playbacks')) {
+        if (userId && relations.includes('playback')) {
             query.leftJoinAndSelect('movie.playbacks', 'playbacks', 'playbacks.userId = :userId', { userId });
         }
         if (userId && relations.includes('licenses')) {

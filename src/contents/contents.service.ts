@@ -1,28 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { createQueryBuilder, DataSource, Repository } from 'typeorm';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError } from '@customErrors';
-import { Playlist } from './playlists/playlist.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Movie } from './movies/movie.entity';
 import { Content } from './content.entity';
-import { ContentUnion } from './content.type';
+import { ContentUnion } from './content.types';
+import { BaseService } from '../common/base/base.service';
 
 @Injectable()
-export class ContentsService {
-    @InjectRepository(Content)
-    private readonly repository: Repository<Content>;
+export class ContentsService extends BaseService<Content, Content, Content> {
+    constructor(
+        @InjectRepository(Content)
+        private readonly contentsRepository: Repository<Content>
+    ) {
+        super(contentsRepository);
+    }
 
-    async findOne(id: number): Promise<typeof ContentUnion> {
-        const content = await this.repository.findOne({
-            where: { id },
-            relations: ['contents', 'playbacks', 'inContents', 'contents.inContents']
+    async findOne(id: number, filters: FindOptionsWhere<Movie> = {}, relations: string[] = []): Promise<typeof ContentUnion> {
+        const content = await this.contentsRepository.findOne({
+            where: { id, ...filters },
+            relations
         });
         return content;
     }
 
-    async findAll(): Promise<Array<typeof ContentUnion>> {
-        const contents = await this.repository.find({
-            relations: ['contents', 'playbacks', 'inContents', 'contents.inContents']
+    async findAll(filters: FindOptionsWhere<Movie> = {}, relations: string[] = []): Promise<Array<typeof ContentUnion>> {
+        const contents = await this.contentsRepository.find({
+            where: filters,
+            relations
         });
         return contents;
     }

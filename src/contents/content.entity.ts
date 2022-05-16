@@ -1,7 +1,8 @@
 import { ObjectType, Field, Int, registerEnumType, InputType } from '@nestjs/graphql';
 import { License } from '../licenses/license.entity';
 import { Column, Entity, OneToMany, PrimaryColumn, TableInheritance } from 'typeorm';
-import { ContentType, IContent } from './content.interface';
+import { IContent } from './content.interface';
+import { ContentType } from './content.interface';
 
 @ObjectType({ isAbstract: true })
 @InputType('ContentInput', { isAbstract: true })

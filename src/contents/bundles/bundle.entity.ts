@@ -1,10 +1,11 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ChildEntity, JoinTable, ManyToMany } from 'typeorm';
 import { Content } from '../content.entity';
-import { ContentContainedUnion } from '../content.type';
+import { ContentType } from '../content.interface';
+import { ContentContainedUnion } from '../content.types';
 
 @ObjectType('Bundle')
-@ChildEntity('bundle')
+@ChildEntity(ContentType.bundle)
 export class Bundle extends Content {
     @Field(() => [ContentContainedUnion], { nullable: true })
     @ManyToMany('Content', 'inContents')

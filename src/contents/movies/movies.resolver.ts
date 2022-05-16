@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver, Query, Int } from '@nestjs/graphql';
+import { Args, Mutation, Resolver, Query, Int, Context, ResolveField, Parent, Info } from '@nestjs/graphql';
 import { CreateMovieInput } from './dto/create-movie.input';
 import { UpdateMovieInput } from './dto/update-movie.input';
 import { Movie } from './movie.entity';
@@ -8,28 +8,42 @@ import { CustomErrorFilter } from '@common/errors/custom-error.filter';
 import { UseFilters, UseGuards } from '@nestjs/common';
 import { GqlUserGuard, User } from '@security/auth/auth.guard';
 import { UserPayload } from '@security/auth/user-payload';
+import { PlaybacksService } from '../../playbacks/playbacks.service';
+import { GraphQLResolveInfo } from 'graphql';
+import { getRelations } from '../../common/graphql-utils';
 
 @Resolver(() => Movie)
 @UseFilters(new CustomErrorFilter())
 export class MoviesResolver extends BaseResolver(Movie, CreateMovieInput, UpdateMovieInput) {
-    constructor(private readonly moviesService: MoviesService) {
+    constructor(private readonly moviesService: MoviesService, private readonly playbackService: PlaybacksService) {
         super(moviesService);
     }
 
     @Query(() => Movie, { name: `movie` })
     @UseGuards(GqlUserGuard)
-    async findOne(@Args('id', { type: () => Int }) id: number, @User() user?: UserPayload): Promise<Movie> {
-        return this.moviesService.findOne(id, {}, ['playbacks', 'licenses', 'inContents'], user?.userId);
+    async findOne(
+        @Args('id', { type: () => Int }) id: number,
+        @Info() info: GraphQLResolveInfo,
+        @User() user?: UserPayload
+    ): Promise<Movie> {
+        return this.moviesService.findOne(id, {}, getRelations(info), user?.userId);
     }
 
     @Query(() => [Movie], { name: `movies` })
     @UseGuards(GqlUserGuard)
-    async findAll(@User() user?: UserPayload): Promise<Movie[]> {
-        return this.moviesService.findAll({}, ['playbacks', 'licenses', 'inContents'], user?.userId);
+    async findAll(@Info() info: GraphQLResolveInfo, @User() user?: UserPayload): Promise<Movie[]> {
+        return this.moviesService.findAll({}, getRelations(info), user?.userId);
     }
 
     @Mutation(() => Movie, { name: `createMovie` })
     async create(@Args(`createMovieInput`) createInput: CreateMovieInput): Promise<Movie> {
         return await this.moviesService.create(createInput);
     }
+
+    // @ResolveField('playback', () => Playback)
+    // async getPlayback(@Parent() movie: Movie, @User() user?: UserPayload) {
+    //     const { id } = movie;
+    //     const res = await this.playbackService.findAll({ content: { id }, userId: user.userId });
+    //     return res[0];
+    // }
 }
