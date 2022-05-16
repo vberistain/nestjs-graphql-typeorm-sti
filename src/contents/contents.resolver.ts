@@ -6,8 +6,7 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { ContentsService } from './contents.service';
 import { ContentUnion } from './content.types';
 import { UserPayload } from '../security/auth/user-payload';
-import { GraphQLResolveInfo } from 'graphql';
-import { getRelations } from '../common/graphql-utils';
+import { Relations } from '../common/graphql-utils';
 
 @Resolver(() => Content)
 export class ContentsResolver {
@@ -15,14 +14,14 @@ export class ContentsResolver {
     private readonly contentsService: ContentsService;
 
     @Query(() => ContentUnion)
-    async content(@Args('id', { type: () => Int }) id: number, @Info() info: GraphQLResolveInfo): Promise<typeof ContentUnion> {
-        return this.contentsService.findOne(id, {}, getRelations(info));
+    async content(@Args('id', { type: () => Int }) id: number, @Relations() relations: string[]): Promise<typeof ContentUnion> {
+        return this.contentsService.findOne(id, {}, relations);
     }
 
     @Query(() => [ContentUnion])
     @UseGuards(GqlUserGuard)
-    async contents(@Info() info: GraphQLResolveInfo, @User() user?: UserPayload): Promise<typeof ContentUnion[]> {
-        return this.contentsService.findAll({}, getRelations(info));
+    async contents(@Relations() relations: string[], @User() user?: UserPayload): Promise<typeof ContentUnion[]> {
+        return this.contentsService.findAll({}, relations);
     }
 
     // @ResolveField(() => Playback, { nullable: true })

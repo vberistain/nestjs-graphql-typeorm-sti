@@ -10,7 +10,7 @@ import { GqlUserGuard, User } from '@security/auth/auth.guard';
 import { UserPayload } from '@security/auth/user-payload';
 import { PlaybacksService } from '../../playbacks/playbacks.service';
 import { GraphQLResolveInfo } from 'graphql';
-import { getRelations } from '../../common/graphql-utils';
+import { Relations } from '@common/graphql-utils';
 
 @Resolver(() => Movie)
 @UseFilters(new CustomErrorFilter())
@@ -23,16 +23,16 @@ export class MoviesResolver extends BaseResolver(Movie, CreateMovieInput, Update
     @UseGuards(GqlUserGuard)
     async findOne(
         @Args('id', { type: () => Int }) id: number,
-        @Info() info: GraphQLResolveInfo,
+        @Relations() relations: string[],
         @User() user?: UserPayload
     ): Promise<Movie> {
-        return this.moviesService.findOne(id, {}, getRelations(info), user?.userId);
+        return this.moviesService.findOne(id, {}, relations, user?.userId);
     }
 
     @Query(() => [Movie], { name: `movies` })
     @UseGuards(GqlUserGuard)
-    async findAll(@Info() info: GraphQLResolveInfo, @User() user?: UserPayload): Promise<Movie[]> {
-        return this.moviesService.findAll({}, getRelations(info), user?.userId);
+    async findAll(@Relations() relations: string[], @User() user?: UserPayload): Promise<Movie[]> {
+        return this.moviesService.findAll({}, relations, user?.userId);
     }
 
     @Mutation(() => Movie, { name: `createMovie` })
