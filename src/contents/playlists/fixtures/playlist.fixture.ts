@@ -6,6 +6,14 @@ const playlistFixture: IPlaylist = {
     title: 'Title',
     description: 'Description',
     type: ContentType.playlist,
+    rentablePeriod: {
+        start: new Date(2020, 1, 1),
+        end: new Date(2050, 1, 1)
+    },
+    availability: {
+        start: new Date(2020, 1, 1),
+        end: new Date(2050, 1, 1)
+    },
     contents: []
 };
 

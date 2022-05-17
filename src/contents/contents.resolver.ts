@@ -6,7 +6,7 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { ContentsService } from './contents.service';
 import { ContentUnion } from './content.types';
 import { UserPayload } from '../security/auth/user-payload';
-import { Relations } from '../common/graphql-utils';
+import { Relations } from '@common/graphql-utils';
 
 @Resolver(() => Content)
 export class ContentsResolver {

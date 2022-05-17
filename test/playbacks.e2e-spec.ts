@@ -29,7 +29,7 @@ const testPlayback2: CreatePlaybackInput = {
     ...testPlayback,
     content: { id: 2 }
 };
-const testMovie2: IMovie = { id: 2, title: 'Movie2', duration: 123, type: ContentType.movie };
+const testMovie2: IMovie = { ...movieFixture, id: 2, title: 'Movie2' };
 
 describe('PlaybackResolver (e2e)', () => {
     let app: INestApplication;

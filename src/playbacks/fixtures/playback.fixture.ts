@@ -1,4 +1,4 @@
-import { ContentType } from '../../contents/content.interface';
+import movieFixture from '../../contents/movies/fixtures/movie.fixture';
 import { IPlayback } from '../playback.interface';
 
 const playbackFixture: IPlayback = {
@@ -10,13 +10,7 @@ const playbackFixture: IPlayback = {
     duration: 1222,
     position: 12,
     userId: 12,
-    content: {
-        id: 1,
-        title: 'Title',
-        description: 'Description',
-        type: ContentType.movie,
-        duration: 12
-    }
+    content: movieFixture
 };
 
 export default playbackFixture;

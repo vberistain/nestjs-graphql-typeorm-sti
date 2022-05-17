@@ -14,45 +14,120 @@ import { Movie } from '../movies/movie.entity';
 import { IPlaylist } from '../playlists/playlist.interface';
 import { Playlist } from '../playlists/playlist.entity';
 import { ContentType } from '../content.interface';
+import movieFixture from '../movies/fixtures/movie.fixture';
+import playlistFixture from '../playlists/fixtures/playlist.fixture';
+import bundleFixture from './fixtures/playlist.fixture';
 
 const testMovie: IMovie = {
+    ...movieFixture,
     id: 1,
     title: 'Matrix',
     description: 'Matrix description',
-    type: ContentType.movie,
     duration: 123
 };
 
 const testMovie2: IMovie = {
+    ...movieFixture,
     id: 2,
     title: 'Interstellar',
     description: 'Interstellar description',
-    type: ContentType.movie,
     duration: 321
 };
 
 const testPlaylist: IPlaylist = {
+    ...playlistFixture,
     id: 5,
     title: 'Playlist',
     description: 'Playlist',
-    type: ContentType.playlist,
     contents: [testMovie]
 };
 
 const testBundle: IBundle = {
+    ...bundleFixture,
     id: 3,
     title: 'Best movies',
     description: 'Best movies of all time',
-    type: ContentType.bundle,
     contents: [testMovie, testMovie2]
 };
 
 const testBundle2: IBundle = {
+    ...bundleFixture,
     id: 4,
     title: 'Best movies 2',
     description: 'Best movies of all time 2',
-    type: ContentType.bundle,
     contents: [testMovie, testMovie2]
+};
+
+const apiTestBundle = {
+    ...testBundle,
+    rentablePeriod: {
+        start: testBundle.rentablePeriod.start.toISOString(),
+        end: testBundle.rentablePeriod.end.toISOString()
+    },
+    availability: {
+        start: testBundle.availability.start.toISOString(),
+        end: testBundle.availability.end.toISOString()
+    },
+    contents: [
+        {
+            ...testMovie,
+            rentablePeriod: {
+                start: testMovie.rentablePeriod.start.toISOString(),
+                end: testMovie.rentablePeriod.end.toISOString()
+            },
+            availability: {
+                start: testMovie.availability.start.toISOString(),
+                end: testMovie.availability.end.toISOString()
+            }
+        },
+        {
+            ...testMovie2,
+            rentablePeriod: {
+                start: testMovie2.rentablePeriod.start.toISOString(),
+                end: testMovie2.rentablePeriod.end.toISOString()
+            },
+            availability: {
+                start: testMovie2.availability.start.toISOString(),
+                end: testMovie2.availability.end.toISOString()
+            }
+        }
+    ]
+};
+
+const apiTestBundle2 = {
+    ...testBundle2,
+    rentablePeriod: {
+        start: testBundle2.rentablePeriod.start.toISOString(),
+        end: testBundle2.rentablePeriod.end.toISOString()
+    },
+    availability: {
+        start: testBundle2.availability.start.toISOString(),
+        end: testBundle2.availability.end.toISOString()
+    },
+    contents: [
+        {
+            ...testMovie,
+            rentablePeriod: {
+                start: testMovie.rentablePeriod.start.toISOString(),
+                end: testMovie.rentablePeriod.end.toISOString()
+            },
+            availability: {
+                start: testMovie.availability.start.toISOString(),
+                end: testMovie.availability.end.toISOString()
+            }
+        },
+        {
+            ...testMovie2,
+            rentablePeriod: {
+                start: testMovie2.rentablePeriod.start.toISOString(),
+                end: testMovie2.rentablePeriod.end.toISOString()
+            },
+            availability: {
+                start: testMovie2.availability.start.toISOString(),
+                end: testMovie2.availability.end.toISOString()
+            }
+        }
+    ]
 };
 
 describe('BundleResolver (e2e)', () => {
@@ -92,12 +167,18 @@ describe('BundleResolver (e2e)', () => {
                             id: 3
                             title: "Best movies"
                             description: "Best movies of all time"
+                            rentablePeriod: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                            availability: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
                             contents: [{ id: 1 }, { id: 2 }]
                         }
                     ) {
                         id
                         title
                         description
+                        rentablePeriod {
+                            start
+                            end
+                        }
                         type
                     }
                 }
@@ -111,6 +192,7 @@ describe('BundleResolver (e2e)', () => {
             expect(res.body.data.createBundle).toEqual({
                 id: testBundle.id,
                 title: testBundle.title,
+                rentablePeriod: { end: testBundle.rentablePeriod.end.toISOString(), start: testBundle.rentablePeriod.start.toISOString() },
                 description: testBundle.description,
                 type: ContentType.bundle
             });
@@ -130,6 +212,8 @@ describe('BundleResolver (e2e)', () => {
                             id: 3
                             title: "Best movies 2"
                             description: "Best movies of all time"
+                            rentablePeriod: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                            availability: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
                             contents: [{ id: 1 }, { id: 2 }]
                         }
                     ) {
@@ -159,6 +243,8 @@ describe('BundleResolver (e2e)', () => {
                 id: 3,
                 type: ContentType.bundle,
                 title: 'Best movies 2',
+                rentablePeriod: bundleFixture.rentablePeriod,
+                availability: bundleFixture.availability,
                 description: 'Best movies of all time'
             });
         });
@@ -178,11 +264,27 @@ describe('BundleResolver (e2e)', () => {
                         title
                         description
                         type
+                        availability {
+                            start
+                            end
+                        }
+                        rentablePeriod {
+                            start
+                            end
+                        }
                         contents {
                             ... on Movie {
                                 id
                                 title
                                 type
+                                rentablePeriod {
+                                    start
+                                    end
+                                }
+                                availability {
+                                    start
+                                    end
+                                }
                                 duration
                                 description
                             }
@@ -196,7 +298,7 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            expect(res.body.data.bundles).toEqual([testBundle, testBundle2]);
+            expect(res.body.data.bundles).toEqual([apiTestBundle, apiTestBundle2]);
         });
 
         it('should return an empty array when no bundles in the database', async () => {
@@ -233,11 +335,27 @@ describe('BundleResolver (e2e)', () => {
                         title
                         description
                         type
+                        rentablePeriod {
+                            start
+                            end
+                        }
+                        availability {
+                            start
+                            end
+                        }
                         contents {
                             ... on Movie {
                                 id
                                 title
                                 type
+                                rentablePeriod {
+                                    start
+                                    end
+                                }
+                                availability {
+                                    start
+                                    end
+                                }
                                 description
                                 duration
                             }
@@ -251,7 +369,7 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            expect(res.body.data.bundle).toEqual(testBundle);
+            expect(res.body.data.bundle).toEqual(apiTestBundle);
         });
 
         it('should return a specific bundle with a playlist in it', async () => {
@@ -265,22 +383,13 @@ describe('BundleResolver (e2e)', () => {
                 query {
                     bundle(id: 3) {
                         id
-                        title
-                        description
-                        type
                         contents {
                             ... on Playlist {
                                 id
-                                title
                                 type
-                                description
                                 contents {
                                     ... on Movie {
                                         id
-                                        title
-                                        type
-                                        duration
-                                        description
                                     }
                                 }
                             }
@@ -294,7 +403,20 @@ describe('BundleResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            expect(res.body.data.bundle).toEqual(bundleWithPlaylist);
+            expect(res.body.data.bundle).toMatchObject({
+                id: bundleWithPlaylist.id,
+                contents: [
+                    {
+                        id: testPlaylist.id,
+                        type: testPlaylist.type,
+                        contents: [
+                            {
+                                id: testMovie.id
+                            }
+                        ]
+                    }
+                ]
+            });
         });
 
         it('should return a not found error', async () => {

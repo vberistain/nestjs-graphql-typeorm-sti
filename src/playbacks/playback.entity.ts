@@ -63,7 +63,6 @@ export class Playback implements IPlayback {
 
     // @AfterLoad()
     // setFinished() {
-    //     console.log(this.content);
     //     if (this.content) {
     //         this.finished = this.position < this.content.duration;
     //     }

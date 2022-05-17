@@ -14,24 +14,27 @@ import { AuthService } from '../src/security/auth/auth.service';
 import { IPlaylist } from '../src/contents/playlists/playlist.interface';
 import { Playlist } from '../src/contents/playlists/playlist.entity';
 import { ContentType } from '../src/contents/content.interface';
+import movieFixture from '../src/contents/movies/fixtures/movie.fixture';
+import playlistFixture from '../src/contents/playlists/fixtures/playlist.fixture';
 
 const testMovie: IMovie = {
+    ...movieFixture,
     id: 1,
     title: 'Interstellar',
     description: 'Interestellar description',
-    duration: 223,
-    type: ContentType.movie
+    duration: 223
 };
 
 const testMovie2: IMovie = {
+    ...movieFixture,
     id: 2,
     title: 'Matrix',
     description: 'Matrix description',
-    duration: 243,
-    type: ContentType.movie
+    duration: 243
 };
 
 const testPlaylist: IPlaylist = {
+    ...playlistFixture,
     id: 3,
     title: 'Playlist',
     description: 'Playlist',
@@ -70,12 +73,23 @@ describe('MovieResolver (e2e)', () => {
             const mutation = gql`
                 mutation {
                     createMovie(
-                        createMovieInput: { id: 1, title: "Interstellar", description: "Interestellar description", duration: 223 }
+                        createMovieInput: {
+                            id: 1
+                            title: "Interstellar"
+                            description: "Interestellar description"
+                            duration: 223
+                            rentablePeriod: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                            availability: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                        }
                     ) {
                         id
                         title
                         description
                         duration
+                        rentablePeriod {
+                            start
+                            end
+                        }
                         type
                     }
                 }
@@ -90,6 +104,10 @@ describe('MovieResolver (e2e)', () => {
                 id: testMovie.id,
                 title: testMovie.title,
                 description: testMovie.description,
+                rentablePeriod: {
+                    start: testMovie.rentablePeriod.start.toISOString(),
+                    end: testMovie.rentablePeriod.end.toISOString()
+                },
                 duration: testMovie.duration,
                 type: ContentType.movie
             });
@@ -103,7 +121,14 @@ describe('MovieResolver (e2e)', () => {
             const mutation = gql`
                 mutation {
                     createMovie(
-                        createMovieInput: { id: 1, title: "Interstellar 2", description: "Interestellar description 2", duration: 224 }
+                        createMovieInput: {
+                            id: 1
+                            title: "Interstellar 2"
+                            description: "Interestellar description 2"
+                            duration: 224
+                            rentablePeriod: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                            availability: { start: "2020-01-01 00:00:00", end: "2050-01-01 00:00:00" }
+                        }
                     ) {
                         id
                         title
@@ -134,7 +159,9 @@ describe('MovieResolver (e2e)', () => {
                 duration: 224,
                 type: 'movie',
                 title: 'Interstellar 2',
-                description: 'Interestellar description 2'
+                description: 'Interestellar description 2',
+                rentablePeriod: testMovie.rentablePeriod,
+                availability: testMovie.availability
             });
         });
     });
@@ -152,6 +179,14 @@ describe('MovieResolver (e2e)', () => {
                         description
                         duration
                         type
+                        rentablePeriod {
+                            start
+                            end
+                        }
+                        availability {
+                            start
+                            end
+                        }
                     }
                 }
             `;
@@ -161,7 +196,30 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            expect(res.body.data.movies).toEqual([testMovie, testMovie2]);
+            expect(res.body.data.movies).toEqual([
+                {
+                    ...testMovie,
+                    rentablePeriod: {
+                        start: testMovie.rentablePeriod.start.toISOString(),
+                        end: testMovie.rentablePeriod.end.toISOString()
+                    },
+                    availability: {
+                        start: testMovie.availability.start.toISOString(),
+                        end: testMovie.availability.end.toISOString()
+                    }
+                },
+                {
+                    ...testMovie2,
+                    rentablePeriod: {
+                        start: testMovie2.rentablePeriod.start.toISOString(),
+                        end: testMovie2.rentablePeriod.end.toISOString()
+                    },
+                    availability: {
+                        start: testMovie2.availability.start.toISOString(),
+                        end: testMovie2.availability.end.toISOString()
+                    }
+                }
+            ]);
         });
 
         it('should return an empty array when no movies in the database', async () => {
@@ -197,6 +255,14 @@ describe('MovieResolver (e2e)', () => {
                         title
                         description
                         duration
+                        rentablePeriod {
+                            start
+                            end
+                        }
+                        availability {
+                            start
+                            end
+                        }
                         type
                     }
                 }
@@ -207,7 +273,17 @@ describe('MovieResolver (e2e)', () => {
                 .send({
                     query: print(query)
                 });
-            expect(res.body.data.movie).toEqual(testMovie);
+            expect(res.body.data.movie).toEqual({
+                ...testMovie,
+                rentablePeriod: {
+                    start: testMovie.rentablePeriod.start.toISOString(),
+                    end: testMovie.rentablePeriod.end.toISOString()
+                },
+                availability: {
+                    start: testMovie.availability.start.toISOString(),
+                    end: testMovie.availability.end.toISOString()
+                }
+            });
         });
 
         it('should return a specific movie and the playlist which contains it', async () => {
@@ -222,6 +298,14 @@ describe('MovieResolver (e2e)', () => {
                         title
                         description
                         duration
+                        availability {
+                            start
+                            end
+                        }
+                        rentablePeriod {
+                            start
+                            end
+                        }
                         type
                         inContents {
                             ... on Playlist {
@@ -242,6 +326,14 @@ describe('MovieResolver (e2e)', () => {
                 });
             expect(res.body.data.movie).toEqual({
                 ...testMovie,
+                rentablePeriod: {
+                    start: testMovie.rentablePeriod.start.toISOString(),
+                    end: testMovie.rentablePeriod.end.toISOString()
+                },
+                availability: {
+                    start: testMovie.availability.start.toISOString(),
+                    end: testMovie.availability.end.toISOString()
+                },
                 inContents: [
                     {
                         id: testPlaylist.id,
@@ -328,6 +420,14 @@ describe('MovieResolver (e2e)', () => {
                         title
                         description
                         duration
+                        rentablePeriod {
+                            start
+                            end
+                        }
+                        availability {
+                            start
+                            end
+                        }
                         type
                     }
                 }
@@ -340,6 +440,14 @@ describe('MovieResolver (e2e)', () => {
                 });
             expect(res.body.data.updateMovie).toEqual({
                 ...testMovie,
+                rentablePeriod: {
+                    start: testMovie.rentablePeriod.start.toISOString(),
+                    end: testMovie.rentablePeriod.end.toISOString()
+                },
+                availability: {
+                    start: testMovie.availability.start.toISOString(),
+                    end: testMovie.availability.end.toISOString()
+                },
                 title: 'Interstellar 2'
             });
         });
